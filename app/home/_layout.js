@@ -1,5 +1,5 @@
 // Creates bottom nav bar with icons and routing
-
+// Resources: https://www.youtube.com/watch?v=yyGS0adZdsU&t=263s
 import { Tabs } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
