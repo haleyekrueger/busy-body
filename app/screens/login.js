@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { View, Text, Image, StyleSheet, useWindowDimensions } from 'react-native';
 import Logo from '../../assets/images/logo1.png'
 import CustomInput from '../components/CustomInput'
+import CustomButton from '../component/CustomButton'
 
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
@@ -9,6 +10,7 @@ import CustomInput from '../components/CustomInput'
 const loginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
 
   const {height} = useWindowDimensions();
 
@@ -22,6 +24,8 @@ const loginScreen = () => {
           
             <CustomInput placeholder="Username" value={username} setValue={setUsername}/>
             <CustomInput placeholder="Password" value={password} setValue={setPassword}/>
+
+            <CustomButton />
         </View>
     );
 };
