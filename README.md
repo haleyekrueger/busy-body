@@ -21,12 +21,12 @@ Keeping this here for future reference :
 
 To run file:
 
-npm install
-npm run ios
+npm install,
+npm run ios,
 OR
-npm run android
+npm run android,
 OR
-npm run web
+npm run web,
 
 
 resources:
