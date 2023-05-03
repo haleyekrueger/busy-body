@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -14,8 +15,10 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
+  const navigation = useNavigation();
+
   const onRegisterPressed = () => {
-    console.warn('Register')
+    navigation.navigate('ConfirmEmail')
   };
 
   const onTermsOfUsePressed = () => {
@@ -27,7 +30,7 @@ const SignUp = () => {
   };
 
   const onSignInPress = () => {
-    console.warn('Sign in')
+    navigation.navigate('Login')
   };
 
 
