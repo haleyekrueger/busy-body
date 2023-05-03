@@ -13,11 +13,13 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const onSignInPressed = () => {
+    console.warn('Sign in');
+
     navigation.navigate('TabNavigation')
   }
 
   const onForgotPasswordPressed = () => {
-    navigation.navigate('ForgotPassword')
+    console.warn('Forgot password')
   }
 
   const onSignInFacebook = () => {
@@ -33,7 +35,7 @@ const LoginScreen = () => {
   }
 
   const onSignUpPressed = () => {
-    navigation.navigate('SignUp')
+    console.warn('Sign up');
   }
 
   const {height} = useWindowDimensions();
