@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import {useNavigation} from '@react-navigation/core';
+
 
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -10,16 +12,16 @@ import SocialSignInButton from '../../components/SocialSignInButtons';
 
 const ForgotPassword = () => {
 
-const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
 
-const onSendPressed = () => {
-  console.warn('Send pressed')
-};
+  const navigation= useNavigation();
+  const onSendPressed = () => {
+    navigation.navigate('ResetPassword')
+  };
 
-
-const onSignInPressed = () => {
-  console.warn('Back to sign in pressed')
-};
+  const onSignInPressed = () => {
+    navigation.navigate('Login')
+  };
 
     return (
       <ScrollView showsVerticalScrollIndicator={false}>

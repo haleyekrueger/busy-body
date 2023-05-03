@@ -9,6 +9,10 @@ import Workouts from '../../screens/workouts';
 import Stats from '../../screens/stats';
 import Profile from '../../screens/profile';
 
+// imports for workouts
+import ViewWorkouts from '../../screens/viewWorkouts';
+import EditWorkouts from '../../screens/editWorkouts/';
+
 // imports for stack
 import Login from '../../screens/login';
 import SignUp from '../../screens/signUp';
@@ -19,6 +23,17 @@ import ResetPassword from '../../screens/resetPassword';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+function WorkoutNavigation () {
+    return(
+        <Stack.Navigator>
+            <Stack.Screen name="Workouts" component={Workouts}/>
+            <Stack.Screen name="EditWorkouts" component={EditWorkouts}/>
+            <Stack.Screen name="ViewWorkouts" component={ViewWorkouts} /> 
+        </Stack.Navigator>
+    )
+}
+
 
 function TabNavigation () {
   return (
@@ -34,19 +49,19 @@ function TabNavigation () {
           tabBarIcon: ({ color }) => (
             <FontAwesome name="home" size={24} color={color} />
           ),
+     
         }}
       />
       <Tab.Screen
-        name="Workouts"
-        component={Workouts}
+        name="WorkoutNavigation"
+        component={WorkoutNavigation}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons
               name="fitness-center"
               size={24}
-              color={color}
-            />
-          ),
+              color={color}/>),
+              headerShown: false
         }}
       />
       <Tab.Screen
@@ -75,12 +90,12 @@ function StackNavigation() {
   return (
     <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="TabNavigation" component={TabNavigation} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="ConfirmEmail" component={ConfirmEmail} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
+      <Stack.Screen name="TabNavigation" component={TabNavigation} />
     </Stack.Navigator>
     </NavigationContainer>
   );
