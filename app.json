@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "busy-body",
+    "slug": "busy-body",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+   
+      },
+
+    "web": {
+
+    }
+  }
+
