@@ -1,62 +1,13 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import {useNavigation} from '@react-navigation/core';
-
-import CustomButton from '../../components/CustomButton';
-
+import { View, Text } from 'react-native'
+import React from 'react'
 
 const Workouts = () => {
-    const navigation=useNavigation();
-
-    const onViewPressed = () => {
-        navigation.navigate('WorkoutNavigation', {screen:'ViewWorkouts'})
-      };
-
-    const onEditPressed = () => {
-      navigation.navigate('WorkoutNavigation', {screen:'EditWorkouts'})
-      };
-
     return(
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.root}>
-    
-            <CustomButton 
-            text="View Workouts" 
-            onPress={onViewPressed}
-            type='SECONDARY'
-            />
-
-            <CustomButton 
-            text="Edit Workouts" 
-            onPress={onEditPressed}
-            type='SECONDARY'
-            />
-
-
+        <View>
+            <Text>my workouts</Text>
         </View>
-        </ScrollView>
     )
-};
+}
 
-const styles = StyleSheet.create({
-  root: {
-    alignItems: 'center',
-    padding: 40
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    margin: 10,
-  },
-  text: {
-    color: '#a6a6a6',
-    marginVertical: 10,
-
-  
-  }
-});
-
-
-export default Workouts;
-
+export default Workouts
 
