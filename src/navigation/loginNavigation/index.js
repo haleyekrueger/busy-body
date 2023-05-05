@@ -3,6 +3,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome, MaterialIcons, Ionicons } from '@expo/vector-icons';
 
+
+//import for survey
+import Survey from '../../screens/survey';
+
 //imports for workotus
 import ViewWorkouts from '../../screens/viewWorkouts';
 import EditWorkouts from '../../screens/editWorkouts';
@@ -96,6 +100,7 @@ function StackNavigation() {
       <Stack.Screen name="ConfirmEmail" component={ConfirmEmail} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
+      <Stack.Screen name="Survey" component={Survey} />
       <Stack.Screen name="TabNavigation" component={TabNavigation} />
     </Stack.Navigator>
     </NavigationContainer>

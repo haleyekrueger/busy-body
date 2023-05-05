@@ -15,7 +15,7 @@ const ConfirmEmail = () => {
 const navigation=useNavigation;
 
 const onConfirmPressed = () => {
-  navigation.navigate("TabNavigation")
+  navigation.navigate("Survey")
 };
 
 const onResendPressed = () => {
