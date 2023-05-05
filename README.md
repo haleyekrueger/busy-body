@@ -6,6 +6,7 @@ Does not look like there is a way to get those commits back. Reminder: don't put
 to push!!!
 
 Keeping this here for future reference :
+  git init
   git branch some_new_branch
   git checkout some_new_branch
   git status
