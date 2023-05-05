@@ -13,7 +13,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const onSignInPressed = () => {
-    navigation.navigate('TabNavigation')
+    navigation.navigate('Survey')
   }
 
   const onForgotPasswordPressed = () => {

@@ -29,7 +29,7 @@ const ExerciseList = () => {
           {exercises.map((exercise) => (
             <View key={exercise.id}>
               <Text>{exercise.name}</Text>
-              {/* <Text>{exercise.instructions}</Text> */}
+              <Text>{exercise.instructions}</Text>
               
             </View>
           ))}
