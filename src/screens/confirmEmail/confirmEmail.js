@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -11,8 +12,10 @@ import SocialSignInButton from '../../components/SocialSignInButtons';
 const ConfirmEmail = () => {
   const [code, setCode] = useState('');
 
+const navigation=useNavigation;
+
 const onConfirmPressed = () => {
-  console.warn('Confirm pressed')
+  navigation.navigate("TabNavigation")
 };
 
 const onResendPressed = () => {
@@ -21,7 +24,7 @@ const onResendPressed = () => {
 
 
 const onSignInPressed = () => {
-  console.warn('Back to sign in pressed')
+  navigation.navigate("Login")
 };
 
     return (

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -9,6 +10,8 @@ import SocialSignInButton from '../../components/SocialSignInButtons';
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 
 const ResetPassword = () => {
+
+const navigation=useNavigation();
 
 const [code, setCode] = useState('');
 
@@ -20,7 +23,7 @@ const onSubmitPressed = () => {
 
 
 const onSignInPressed = () => {
-  console.warn('Back to sign in pressed')
+  navigation.navigate("Login")
 };
 
     return (

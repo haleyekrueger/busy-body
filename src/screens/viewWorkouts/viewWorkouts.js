@@ -30,6 +30,7 @@ const ExerciseList = () => {
             <View key={exercise.id}>
               <Text>{exercise.name}</Text>
               {/* <Text>{exercise.instructions}</Text> */}
+              
             </View>
           ))}
         </View>
