@@ -21,11 +21,8 @@ Keeping this here for future reference :
 To run file:
 
 npm install,
-npm run ios,
-OR
-npm run android,
-OR
-npm run web,
+npx expo start
+
 
 
 resources:
