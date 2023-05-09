@@ -12,20 +12,19 @@ import SocialSignInButton from '../../components/SocialSignInButtons';
 const ConfirmEmail = () => {
   const [code, setCode] = useState('');
 
-const navigation=useNavigation;
+  const navigation=useNavigation();
 
-const onConfirmPressed = () => {
-  navigation.navigate("Survey")
-};
+  const onConfirmPressed = () => {
+    navigation.navigate('Survey')
+  };
 
-const onResendPressed = () => {
-  console.warn('Resend pressed')
-};
+  const onResendPressed = () => {
+    console.warn('Resend pressed')
+  };
 
-
-const onSignInPressed = () => {
-  navigation.navigate("Login")
-};
+  const onSignInPressed = () => {
+    navigation.navigate('Login')
+  };
 
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
