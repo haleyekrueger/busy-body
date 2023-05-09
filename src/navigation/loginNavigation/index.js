@@ -10,6 +10,7 @@ import Survey from '../../screens/survey';
 //imports for workotus
 import ViewWorkouts from '../../screens/viewWorkouts';
 import EditWorkouts from '../../screens/editWorkouts';
+import ExerciseDetails from '../../screens/exerciseDetails';
 
 // imports for tab
 import Home from '../../screens/home';
@@ -34,6 +35,7 @@ function WorkoutNavigation () {
           <Stack.Screen name="Workouts" component={Workouts}/>
           <Stack.Screen name="EditWorkouts" component={EditWorkouts}/>
           <Stack.Screen name="ViewWorkouts" component={ViewWorkouts} /> 
+          <Stack.Screen name="ExerciseDetails" component={ExerciseDetails} />   
       </Stack.Navigator>
   )
 }
