@@ -1,40 +1,64 @@
-//Resources: 
-// https://programmingwithmosh.com/react-native/make-api-calls-in-react-native-using-fetch/
-// https://reactnative.dev/docs/network?language=javascript
-// https://www.freecodecamp.org/news/react-native-networking-api-requests-using-fetchapi/
-
 import React, { useEffect, useState } from 'react';
 import GetExercises from '../../getExercises';
-import { Text, View } from 'react-native';
-
+import { View, StyleSheet, ScrollView } from 'react-native';
+import _ from 'lodash';
+import CustomButton from '../../components/CustomButton/CustomButton';
+import {useNavigation} from '@react-navigation/core';
+import ExerciseDetails from '../exerciseDetails'
 
 const ExerciseList = () => {
-    const [exercises, setExercises] = useState([]);
 
-    useEffect(() => {
-        const FetchExercises = async () => {
-        try{
-            const exerciseData = await GetExercises();
-            setExercises(exerciseData);
-        } catch(error) {
-            console.error(error);
-        }
+  const navigation = useNavigation();
+  const onViewPressed = (exercise) => {
+    navigation.navigate('ExerciseDetails', { exercise })
+  };
+
+  const [exercises, setExercises] = useState([]);
+
+  const [muscleGroups, setMuscleGroups] = useState(['chest', 'shoulders', 'triceps']);
+
+  useEffect(() => {
+    const FetchExercises = async () => {
+      try {
+      const promises = muscleGroups.map((muscleGroup) => GetExercises(muscleGroup));
+      const exerciseData = await Promise.all(promises);
+      const filteredData = exerciseData
+        .map((data, index) => data.filter((exercises) => exercises.muscle === muscleGroups[index]))
+        .map((data) => _.shuffle(data).slice(0,2));
+        setExercises(filteredData.flat());
+      } catch(error) {
+        console.error(error);
+      }
     }
-        FetchExercises();
+    FetchExercises();
+  }, []);
 
-    }, []);
+  return (
+    <ScrollView contentContainerStyle={styles.root} showsVerticalScrollIndicator={false}>
+        {exercises.map((exercise) => (
+          <View key={exercise.id}>
+            <CustomButton 
+              text={exercise.name} 
+              onPress={() => onViewPressed(exercise)}
+              type="TERTIARY"/>
+          </View>
+        ))}
+    </ScrollView>
+  );
+}
 
-    return (
-        <View>      
-          {exercises.map((exercise) => (
-            <View key={exercise.id}>
-              <Text>{exercise.name}</Text>
-              <Text>{exercise.instructions}</Text>
-              
-            </View>
-          ))}
-        </View>
-      );
-    }
+const styles = StyleSheet.create({
+  root: {
+    alignItems: 'center',
+    padding: 40,
+    backgroundColor: "white",
+  },
+  logo: {
+    width: '70%',
+    maxWidth: 300,
+    height: 100,
+    marginBottom: 5,
+  },
+});
 
 export default ExerciseList;

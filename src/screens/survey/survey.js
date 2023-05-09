@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 
 import CustomButton from '../../components/CustomButton';
@@ -11,6 +11,7 @@ const Survey = () => {
     const onSubmitPressed = () => {
         navigation.navigate('TabNavigation', {screen: 'WorkoutNavigation'})
       };
+      
 
     return(
     <ScrollView showsVerticalScrollIndicator={false}>
