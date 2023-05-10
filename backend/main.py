@@ -5,10 +5,21 @@ import json
 import constants
 from json2html import json2html
 
+uri = "mongodb+srv://BusyBody:BusyBody1@cluster0.ufyp5qb.mongodb.net/?retryWrites=true&w=majority"
+
+# Create a new client and connect to the server
+client = MongoClient(uri)
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
+
 app = Flask(__name__)
-client = MongoClient('mongodb://localhost:27017')       # default MongoDB local host port
-database = client['mydatabase']
-collection = database.users
+database = client['busybody']
+collection = database['users']
 
 @app.route('/')
 def index():
