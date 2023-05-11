@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import axios from 'axios';
@@ -18,7 +18,7 @@ const Profile = () => {
     useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/user'); # change url to host (probably appspot)
+        const response = await axios.get('http://localhost:8080/user'); //change url to host (probably appspot)
         setUserData(response.data);
       } catch (error) {
         console.error(error);
@@ -47,23 +47,9 @@ const Profile = () => {
       </View>
     </ScrollView>
   );
-};
 
-    return(
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.root}>
-
-            <CustomButton 
-            text="Log Out" 
-            onPress={onLogoutPressed}
-            type='SECONDARY'
-            />
-
-
-        </View>
-        </ScrollView>
-    )
-};
+   
+  };
 
 const styles = StyleSheet.create({
   root: {
