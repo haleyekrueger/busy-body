@@ -5,7 +5,10 @@ import json
 import constants
 from json2html import json2html
 
-uri = "mongodb+srv://BusyBody:BusyBody1@cluster0.ufyp5qb.mongodb.net/?retryWrites=true&w=majority"
+# uri = "mongodb+srv://BusyBody:BusyBody1@cluster0.ufyp5qb.mongodb.net/?retryWrites=true&w=majority"
+# database being used by Haley for testing:
+uri = "mongodb+srv://busybodyteam:busy@cluster0.dxguksd.mongodb.net/?retryWrites=true&w=majority"
+
 
 # Create a new client and connect to the server
 client = MongoClient(uri)
