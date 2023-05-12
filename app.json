@@ -4,21 +4,22 @@
     "slug": "busy-body",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
+    "userInterfaceStyle": "light",
+    "extra": {
+      "eas": {
+        "projectId": "eef47df7-6590-4bab-b2ec-0af3edf4f857"
+      }
     },
     "android": {
-   
-      },
-
-    "web": {
-
+      "package": "com.busy_body"
     }
-  }
-
+  },
+  "assetBundlePatterns": [
+    "**/*"
+  ],
+  "ios": {
+    "supportsTablet": true
+  },
+  "android": {},
+  "web": {}
+}
