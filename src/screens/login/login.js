@@ -9,10 +9,17 @@ import { useNavigation } from '@react-navigation/native';
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 
 const LoginScreen = () => {
-  const [username, setUsername] = useState('');
+  // request attributes username and password from Users entity on busy body 
+  // dqtastore database
+const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const onSignInPressed = () => {
+    // send username and password to backend? how to manage login
+// can we do a /users GET request and then parse through the list for
+// the unique username and then see if the password asso iated with the username 
+// matches the password entered
+
     navigation.navigate('Survey')
   }
 
