@@ -5,6 +5,9 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
+const config = {
+  backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
+}
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 
@@ -27,7 +30,7 @@ const [username, setUsername] = useState('');
   
   
   const onSignInPressed = async () => {
-      const response = await fetch('/users')
+      const response = await fetch('`${config.backendUrl}/users`)
       const users = await response.json()
 
       const usernameInput = document.getElementById('username').value
