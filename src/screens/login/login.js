@@ -14,15 +14,36 @@ const LoginScreen = () => {
 const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSignInPressed = () => {
+ // const onSignInPressed = () => {
     // send username and password to backend? how to manage login
 // can we do a /users GET request and then parse through the list for
 // the unique username and then see if the password asso iated with the username 
 // matches the password entered
+    
 
-    navigation.navigate('Survey')
-  }
+  //  navigation.navigate('Survey')
+//  }
+  
+  
+  
+  const onSignInPressed = async () => {
+      const response = await fetch('/users')
+      const users = await response.json()
 
+      const usernameInput = document.getElementById('username').value
+      const passwordInput = document.getElementById('password').value
+
+      const user = users.find(user => user.username === usernameInput)
+
+        if (user && user.password === passwordInput) {
+            navigation.navigate('Survey')
+        } else {
+             alert('Invalid username or password')
+        }
+      }
+  
+  
+  
   const onForgotPasswordPressed = () => {
     navigation.navigate('ForgotPassword')
     // we will need to add an email attribute to the user object
