@@ -108,6 +108,26 @@ def users_get(user_id):
         res.headers.set('Content-Type', 'application/json')
         return res
 
+#GET all users
+
+@app.route('/users', methods=['GET'])
+def users_get():
+    users_key = client.key(constants.users)
+    users = list(query.fetch())
+
+    if users == None:
+        return (json.dumps({"Error": "No users exist"}), 404)
+    else: # check header for accepted type, if json send json if html send json2html FIX
+        response_data = []
+        for user in users:
+            user_id = user.key.id
+            user_data = {"id": user_id, "username": user.get("username"), "password": user.get("password"), "age": user.get("age"), "body_type": user.get("body_type"), "self": url_for('users_get', user_id=user_id, _external=True)}
+            response_data.append(user_data)
+        #res = make_response(json2html.convert(json = json.dumps(response_data)))
+        res = make_response(json.dumps(response_data))
+        res.headers.set('Content-Type', 'application/json')
+        return res
+      
 """
 #EDIT A users (PATCH)
 
