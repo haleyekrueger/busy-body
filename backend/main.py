@@ -111,8 +111,9 @@ def users_get(user_id):
 #GET all users
 
 @app.route('/users', methods=['GET'])
-def users_get():
-    users_key = client.key(constants.users)
+def users_get_all():
+    users_key = client.key(constants.users) # prob don't need 
+    query = client.query(kind='users')
     users = list(query.fetch())
 
     if users == None:
