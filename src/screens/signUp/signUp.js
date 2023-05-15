@@ -8,7 +8,32 @@ import SocialSignInButton from '../../components/SocialSignInButtons';
 
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
-
+const config = {
+  backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
+}
+const registerUser = async (username, email, password) => {
+  try {
+    const response = await fetch(`${config.backendUrl}/users`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
+    });
+    if (response.ok) {
+      return true;
+    } else {
+      const errorData = await response.json()
+      throw new Error(errorData.message)
+    }
+  } catch (error) {
+    throw new Error ('Registration failed.')
+  }
+}
 const SignUp = () => {
 
   const navigation = useNavigation();
@@ -19,8 +44,13 @@ const SignUp = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
 
 
-  const onRegisterPressed = () => {
-    navigation.navigate('ConfirmEmail')
+  const onRegisterPressed = () => async() => {
+    try{
+      await registerUser(username, email, password);
+      navigation.navigate('ConfirmEmail')
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const onTermsOfUsePressed = () => {

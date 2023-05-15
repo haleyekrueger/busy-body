@@ -30,7 +30,7 @@ const [username, setUsername] = useState('');
   
   
   const onSignInPressed = async () => {
-      const response = await fetch('`${config.backendUrl}/users`)
+      const response = await fetch('`${config.backendUrl}/users`')
       const users = await response.json()
 
       const usernameInput = document.getElementById('username').value
