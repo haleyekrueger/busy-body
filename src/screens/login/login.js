@@ -14,7 +14,7 @@ const config = {
 const LoginScreen = () => {
   // request attributes username and password from Users entity on busy body 
   // dqtastore database
-const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
  // const onSignInPressed = () => {
@@ -29,21 +29,29 @@ const [username, setUsername] = useState('');
   
   
   
-  const onSignInPressed = async () => {
-      const response = await fetch('`${config.backendUrl}/users`')
-      const users = await response.json()
+const onSignInPressed = async () => {
+  try {
+    const response = await fetch(`${config.backendUrl}/users`);
+    const users = await response.json();
 
-      const usernameInput = document.getElementById('username').value
-      const passwordInput = document.getElementById('password').value
+    console.log(users);
+  
+    const usernameInput = username;
+    const passwordInput = password;
 
-      const user = users.find(user => user.username === usernameInput)
+    const user = users.find(user => user.username === usernameInput)
+    
 
-        if (user && user.password === passwordInput) {
-            navigation.navigate('Survey')
-        } else {
-             alert('Invalid username or password')
-        }
-      }
+    if (user && user.password === passwordInput) {
+      navigation.navigate('Survey');
+    } else {
+      alert('Invalid username or password');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('Something went wrong. Please try again later.');
+  }
+};
   
   
   
@@ -85,7 +93,10 @@ const [username, setUsername] = useState('');
             resizeMode="contain"
             />
           
-            <CustomInput placeholder="Username" value={username} setValue={setUsername}/>
+            <CustomInput 
+              placeholder="Username" 
+              value={username} 
+              setValue={setUsername}/>
             <CustomInput placeholder="Password" value={password} setValue={setPassword}/>
 
             <CustomButton text="Sign In" onPress={onSignInPressed} />
