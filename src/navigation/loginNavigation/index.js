@@ -2,7 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome, MaterialIcons, Ionicons } from '@expo/vector-icons';
-
+import { useRoute } from '@react-navigation/native';
+import {useEffect} from 'react';
 
 //import for survey
 import Survey from '../../screens/survey';
@@ -29,6 +30,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 
+
 function WorkoutNavigation () {
   return(
       <Stack.Navigator>
@@ -40,8 +42,12 @@ function WorkoutNavigation () {
   )
 }
 
-
 function TabNavigation () {
+  const route = useRoute();
+  const {userID} = route.params;
+  useEffect(() => {
+    console.log(userID);
+  }, []);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -60,6 +66,7 @@ function TabNavigation () {
       <Tab.Screen
         name="WorkoutNavigation"
         component={WorkoutNavigation}
+        initialParams={{userID}}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons
@@ -83,6 +90,7 @@ function TabNavigation () {
       <Tab.Screen
         name="Profile"
         component={Profile}
+        initialParams={{userID}}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={24} color={color} />

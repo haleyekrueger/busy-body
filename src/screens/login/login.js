@@ -43,7 +43,9 @@ const onSignInPressed = async () => {
     
 
     if (user && user.password === passwordInput) {
-      navigation.navigate('Survey');
+      const userID = user.id;
+      // passing userID to identify the correct user on the rest of the screens
+      navigation.navigate('Survey', {userID});
     } else {
       alert('Invalid username or password');
     }
