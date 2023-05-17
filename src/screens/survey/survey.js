@@ -1,18 +1,29 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
+import {userID} from '../login';
+import {useRoute} from '@react-navigation/native';
 
 import CustomButton from '../../components/CustomButton';
 
 
 const Survey = () => {
+
+    const route = useRoute();
+    const {userID} = route.params;
+    console.log(userID)
+
+    useEffect(() => {
+      console.log(userID);
+    }, []);
+
     const navigation=useNavigation();
 
     const onSubmitPressed = () => {
-        navigation.navigate('TabNavigation', {screen: 'WorkoutNavigation'})
+        navigation.navigate('TabNavigation', {screen: 'WorkoutNavigation', userID: userID})
       };
       
-
+    
     return(
     <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
