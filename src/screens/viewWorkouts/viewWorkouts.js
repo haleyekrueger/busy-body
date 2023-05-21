@@ -15,7 +15,7 @@ const ExerciseList = () => {
 
   const [exercises, setExercises] = useState([]);
 
-  const [muscleGroups, setMuscleGroups] = useState(['chest', 'shoulders', 'triceps']);
+  const [muscleGroups, setMuscleGroups] = useState(['quadriceps', 'glutes', 'middle_back', 'chest', 'shoulders', 'triceps', 'biceps']);
 
   useEffect(() => {
     const FetchExercises = async () => {
@@ -24,7 +24,7 @@ const ExerciseList = () => {
       const exerciseData = await Promise.all(promises);
       const filteredData = exerciseData
         .map((data, index) => data.filter((exercises) => exercises.muscle === muscleGroups[index]))
-        .map((data) => _.shuffle(data).slice(0,2));
+        .map((data) => _.shuffle(data).slice(0,1));
         setExercises(filteredData.flat());
       } catch(error) {
         console.error(error);
