@@ -99,6 +99,7 @@ const onSignInPressed = async () => {
               placeholder="Username" 
               value={username} 
               setValue={setUsername}/>
+              
             <CustomInput placeholder="Password" value={password} setValue={setPassword}/>
 
             <CustomButton text="Sign In" onPress={onSignInPressed} />

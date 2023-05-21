@@ -1,58 +1,83 @@
-import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import {useNavigation} from '@react-navigation/core';
-import {userID} from '../login';
-import {useRoute} from '@react-navigation/native';
-
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import { useRoute } from '@react-navigation/native';
+import CustomRadioButton from '../../components/CustomRadioButton';
 import CustomButton from '../../components/CustomButton';
 
-
 const Survey = () => {
+  // to get the userID passed from login screen
+  const route = useRoute();
+  const { userID } = route.params;
 
-    const route = useRoute();
-    const {userID} = route.params;
-    console.log(userID)
+  // to set the checkboxes for survey answer
+  const bodyTypeOptions = ['Ectomorph', 'Mesomorph', 'Endomorph'];
+  const [selectedBodyType, setSelectedBodyType] = useState(null);
 
-    useEffect(() => {
-      console.log(userID);
-    }, []);
+  const experienceLevelOptions = ['Beginner', 'Intermediate', 'Advanced'];
+  const [selectedExperienceLevel, setSelectedExperienceLevel] = useState(null);
 
-    const navigation=useNavigation();
+  const handleSelectBodyType = (index) => {
+    setSelectedBodyType(index);
+  };
 
-    const onSubmitPressed = () => {
-        navigation.navigate('TabNavigation', {screen: 'WorkoutNavigation', userID: userID})
-      };
-      
-    
-    return(
+  const handleSelectExperienceLevel = (index) => {
+    setSelectedExperienceLevel(index);
+  };
+
+  const navigation = useNavigation();
+
+  // pass userID, selected body type, and selected experience level
+  // to the rest of the screens
+  const onSubmitPressed = () => {
+    navigation.navigate('TabNavigation', {
+      screen: 'WorkoutNavigation',
+      userID: userID,
+      bodyType: bodyTypeOptions[selectedBodyType],
+      experienceLevel: experienceLevelOptions[selectedBodyType]
+     });
+  };
+
+  return (
     <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.root}>
-            <Text>Fill out the survey then press submit to access your workout plan</Text>
-            <CustomButton 
-            text="Submit" 
-            onPress={onSubmitPressed}
-            type='SECONDARY'
-            />
+      <View style={styles.root}>
+        <Text style={styles.heading}>Please fill out the survey then press submit to access your workout plan</Text>
+        <Text style={styles.text}>Select your body type:</Text>
+        <CustomRadioButton
+          options={bodyTypeOptions}
+          selectedOption={selectedBodyType}
+          onSelect={handleSelectBodyType}
+        />
 
+        <Text style={styles.text}>Select your experience level:</Text>
+        <CustomRadioButton
+          options={experienceLevelOptions}
+          selectedOption={selectedExperienceLevel}
+          onSelect={handleSelectExperienceLevel}
+        />
 
-        </View>
-        </ScrollView>
-    )
+        <CustomButton text="Submit" onPress={onSubmitPressed} type="SECONDARY" />
+      </View>
+    </ScrollView>
+  );
 };
 
-
 const styles = StyleSheet.create({
-    root: {
-      alignItems: 'center',
-      padding: 40,
-      backgroundColor: "white",
-    },
-    logo: {
-      width: '70%',
-      maxWidth: 300,
-      height: 100,
-      marginBottom: 5,
-    },
+  root: {
+    alignItems: 'center',
+    padding: 40,
+    backgroundColor: 'white',
+  },
+  text: {
+   
+    padding: 8,
+    fontSize: 15
+  },
+  heading: {
+    fontWeight: 'bold',
+    padding: 8,
+    fontSize: 18
+  },
 });
 
-export default Survey 
+export default Survey;
