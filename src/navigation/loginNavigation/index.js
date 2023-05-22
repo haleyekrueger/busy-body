@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
-import {useEffect} from 'react';
+
 
 //import for survey
 import Survey from '../../screens/survey';
@@ -32,22 +32,42 @@ const Stack = createNativeStackNavigator();
 
 
 function WorkoutNavigation () {
+
+  const route = useRoute();
+  const {userID, bodyType, experienceLevel} = route.params;
+
   return(
       <Stack.Navigator>
-          <Stack.Screen name="Workouts" component={Workouts}/>
-          <Stack.Screen name="EditWorkouts" component={EditWorkouts}/>
-          <Stack.Screen name="ViewWorkouts" component={ViewWorkouts} /> 
-          <Stack.Screen name="ExerciseDetails" component={ExerciseDetails} />   
+      
+          <Stack.Screen 
+              name="Workouts"
+              component={Workouts}
+              initialParams = {{userID, bodyType, experienceLevel}}
+          />
+          <Stack.Screen 
+              name="EditWorkouts"
+              component={EditWorkouts}
+              initialParams = {{userID, bodyType, experienceLevel}}
+          />
+          <Stack.Screen 
+              name="ViewWorkouts"
+              component={ViewWorkouts}
+              initialParams = {{userID, bodyType, experienceLevel}} 
+          /> 
+          <Stack.Screen 
+              name="ExerciseDetails"
+              component={ExerciseDetails}
+              initialParams = {{userID}} 
+          />   
       </Stack.Navigator>
   )
 }
 
 function TabNavigation () {
+
   const route = useRoute();
-  const {userID} = route.params;
-  useEffect(() => {
-    console.log(userID);
-  }, []);
+  const {userID, bodyType, experienceLevel} = route.params;
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -66,7 +86,7 @@ function TabNavigation () {
       <Tab.Screen
         name="WorkoutNavigation"
         component={WorkoutNavigation}
-        initialParams={{userID}}
+        initialParams={{userID, bodyType, experienceLevel}}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons

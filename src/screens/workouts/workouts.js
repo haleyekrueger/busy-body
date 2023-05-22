@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
+import { useRoute } from '@react-navigation/native';
 
 import CustomButton from '../../components/CustomButton';
 
 
 const Workouts = () => {
+    const route = useRoute();
+    const {userID, experienceLevel } = route.params;
     const navigation=useNavigation();
 
     const onViewPressed = () => {
