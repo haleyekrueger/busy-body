@@ -29,14 +29,19 @@ const Survey = () => {
 
   // pass userID, selected body type, and selected experience level
   // to the rest of the screens
+
+  // once database updated, can save the experience level and body type
+  // and just pass the userID to access the other information in another screen
   const onSubmitPressed = () => {
     navigation.navigate('TabNavigation', {
       screen: 'WorkoutNavigation',
       userID: userID,
       bodyType: bodyTypeOptions[selectedBodyType],
-      experienceLevel: experienceLevelOptions[selectedBodyType]
+      experienceLevel: experienceLevelOptions[selectedExperienceLevel]
      });
+    
   };
+
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
