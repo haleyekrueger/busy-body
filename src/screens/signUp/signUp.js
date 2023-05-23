@@ -12,7 +12,7 @@ const config = {
   backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
 }
 const body_type = "mesomorph";
-const age = 25; 
+const age = 26; 
 const registerUser = async (username, password, age, body_type) => {
   try {
     const response = await fetch(`${config.backendUrl}/users`, {
