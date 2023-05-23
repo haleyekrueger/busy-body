@@ -11,7 +11,9 @@ import SocialSignInButton from '../../components/SocialSignInButtons';
 const config = {
   backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
 }
-const registerUser = async (username, email, password) => {
+const body_type = "mesomorph";
+const age = 25; 
+const registerUser = async (username, password, age, body_type) => {
   try {
     const response = await fetch(`${config.backendUrl}/users`, {
       method: 'POST',
@@ -20,8 +22,9 @@ const registerUser = async (username, email, password) => {
       },
       body: JSON.stringify({
         username,
-        email,
         password,
+        age,
+        body_type
       }),
     });
     if (response.ok) {
@@ -44,9 +47,9 @@ const SignUp = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
 
 
-  const onRegisterPressed = () => async() => {
+  const onRegisterPressed = async() => {
     try{
-      await registerUser(username, email, password);
+      await registerUser(username, password, age, body_type);
       navigation.navigate('ConfirmEmail')
     } catch (error) {
       console.error(error)
@@ -109,7 +112,7 @@ const SignUp = () => {
             <SocialSignInButton/>
 
             <CustomButton
-            text="Already have an account? Sign in"
+            text="Already have an account? Sign intest"
             onPress={onSignInPress}
             type="TERTIARY"
             />
