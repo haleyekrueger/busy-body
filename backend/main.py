@@ -1,7 +1,10 @@
 from google.cloud import datastore
-from flask import Flask, request, json, url_for, make_response
+from flask import Flask, request, json, url_for, make_response, jsonify
 import json
 import constants
+import requests
+from datetime import datetime, timedelta
+
 #from json2html import json2html
 
 app = Flask(__name__)
@@ -18,6 +21,94 @@ def index():
     - age must be between 14 and 115
     - body_type must be either "endomorph", "ectomorph", or "mesomorph"
  """
+app = Flask(__name__)
+
+@app.route('/users/<user_id>/exercises', methods=['GET'])
+def retrieve_exercises(user_id):
+    query = client.query(kind='Exercises')
+    query.add_filter('user_id', '=', int(user_id))
+    exercises = list(query.fetch())
+    return exercises
+
+def get_last_query_time(user_id):
+    query_key = client.key('LastQueryTime', user_id)
+    last_query_time_entity = client.get(query_key)
+    if last_query_time_entity is not None:
+        return last_query_time_entity['time']
+    return None
+
+def update_last_query_time(user_id, query_time):
+    query_key = client.key('LastQueryTime', user_id)
+    last_query_time_entity = datastore.Entity(key=query_key)
+    last_query_time_entity['time'] = query_time
+    client.put(last_query_time_entity)
+
+def user_get_exercises(user_id):
+
+    # Check if a week has passed since the previous query
+    #last_query_time = get_last_query_time(user_id)
+    #current_time = datetime.now()
+    #if last_query_time is not None and current_time - last_query_time < timedelta(weeks=1):
+    #    exercises = retrieve_exercises(user_id)
+    #    return jsonify(response), 200  # Return stored exercise data if within a week
+
+    # Update the last query time
+    #update_last_query_time(user_id, current_time)
+
+    # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
+    muscle = 'biceps'
+    api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+    response = requests.get(api_url, headers={'X-Api-Key': 'udvq59GahQ4a15HHMgJo1A==98CkQMsE6uSD8zTz'})
+    
+    if response.status_code == requests.codes.ok:
+        # put data from external api into busy body api
+        exercise_key = client.key('Exercises')
+        exercise = datastore.Entity(key=exercise_key)
+        exercise_data = response.get_json()
+
+        user = int(user_id)
+        name = exercise_data.get('name')
+        equipment = exercise_data.get('equipment')
+        exercise['instructions'] = exercise_data.get('instructions')
+
+        exercise['user_id'] = int(user_id)
+        exercise['name'] = exercise_data.get('name')
+        exercise['equipment'] = exercise_data.get('equipment')
+        exercise['instructions'] = exercise_data.get('instructions')
+
+        client.put(exercise)
+
+        # retrieve the data we just stored
+        query = client.query(kind='Exercises')
+        query.add_filter('user_id', '=', int(user_id))
+        exercises = list(query.fetch())
+    
+
+        return jsonify({'name': exercises}, 200
+    else:
+        return "Error: {} {}".format(response.status_code, response.text), response.status_code
+
+
+@app.route('/users/<user_id>/exercises', methods=['POST'])
+def create_exercise(user_id):
+    # Extract exercise data from the request body
+    exercise_data = request.get_json()
+    exercise_name = exercise_data.get('name')
+    exercise_duration = exercise_data.get('duration')
+
+    # Create a new Exercise entity
+    exercise_key = client.key('Exercises')
+    exercise = datastore.Entity(key=exercise_key)
+    exercise['user_id'] = int(user_id)
+    exercise['name'] = exercise_name
+    exercise['duration'] = exercise_duration
+    
+    # Save the exercise entity to Datastore
+    client.put(exercise)
+    
+    return 'Exercise created successfully'
+
+
 @app.route('/users', methods=['POST'])
 def users_post():
 
@@ -311,4 +402,4 @@ def users_delete(user_id):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
