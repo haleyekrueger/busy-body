@@ -23,26 +23,8 @@ def index():
  """
 app = Flask(__name__)
 
+
 @app.route('/users/<user_id>/exercises', methods=['GET'])
-def retrieve_exercises(user_id):
-    query = client.query(kind='Exercises')
-    query.add_filter('user_id', '=', int(user_id))
-    exercises = list(query.fetch())
-    return exercises
-
-def get_last_query_time(user_id):
-    query_key = client.key('LastQueryTime', user_id)
-    last_query_time_entity = client.get(query_key)
-    if last_query_time_entity is not None:
-        return last_query_time_entity['time']
-    return None
-
-def update_last_query_time(user_id, query_time):
-    query_key = client.key('LastQueryTime', user_id)
-    last_query_time_entity = datastore.Entity(key=query_key)
-    last_query_time_entity['time'] = query_time
-    client.put(last_query_time_entity)
-
 def user_get_exercises(user_id):
 
     # Check if a week has passed since the previous query
@@ -56,25 +38,43 @@ def user_get_exercises(user_id):
     #update_last_query_time(user_id, current_time)
 
     # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
+    """
+def get_last_query_time(user_id):
+    query_key = client.key('LastQueryTime', user_id)
+    last_query_time_entity = client.get(query_key)
+    if last_query_time_entity is not None:
+        return last_query_time_entity['time']
+    return None
+
+def update_last_query_time(user_id, query_time):
+    query_key = client.key('LastQueryTime', user_id)
+    last_query_time_entity = datastore.Entity(key=query_key)
+    last_query_time_entity['time'] = query_time
+    client.put(last_query_time_entity)
+"""
     muscle = 'biceps'
     api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
-    response = requests.get(api_url, headers={'X-Api-Key': 'udvq59GahQ4a15HHMgJo1A==98CkQMsE6uSD8zTz'})
+    response = requests.get(api_url, headers={'X-Api-Key': '9SsEQoSFfHYgG41GSjemRhN7YaAMuEyA1OjBPFL3'})
     
     if response.status_code == requests.codes.ok:
         # put data from external api into busy body api
         exercise_key = client.key('Exercises')
         exercise = datastore.Entity(key=exercise_key)
-        exercise_data = response.get_json()
+        exercise_data = response.json()
+
+
+        for exercise_item in exercise_data:
+            exercise = datastore.Entity(key=exercise_key)
 
         user = int(user_id)
-        name = exercise_data.get('name')
-        equipment = exercise_data.get('equipment')
-        exercise['instructions'] = exercise_data.get('instructions')
+        name = exercise_item.get('name')
+        equipment = exercise_item.get('equipment')
+        instructions = exercise_item.get('instructions')
 
-        exercise['user_id'] = int(user_id)
-        exercise['name'] = exercise_data.get('name')
-        exercise['equipment'] = exercise_data.get('equipment')
-        exercise['instructions'] = exercise_data.get('instructions')
+        exercise['user_id'] = user
+        exercise['name'] = name
+        exercise['equipment'] = equipment
+        exercise['instructions'] = instructions
 
         client.put(exercise)
 
@@ -84,7 +84,7 @@ def user_get_exercises(user_id):
         exercises = list(query.fetch())
     
 
-        return jsonify({'name': exercises}, 200
+        return json.dumps(exercises), 200
     else:
         return "Error: {} {}".format(response.status_code, response.text), response.status_code
 
