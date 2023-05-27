@@ -23,7 +23,52 @@ def index():
  """
 app = Flask(__name__)
 
+from datetime import datetime, timedelta
 
+app = Flask(__name__)
+
+@app.route('/users/<user_id>/exercises', methods=['GET'])
+def user_get_exercises(user_id):
+
+    # Check if exercises already exist for the user
+    query = client.query(kind='Exercises')
+    query.add_filter('user_id', '=', int(user_id))
+    existing_exercises = list(query.fetch())
+
+    if not existing_exercises:
+        # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
+        muscle = 'biceps'
+        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+        response = requests.get(api_url, headers={'X-Api-Key': '9SsEQoSFfHYgG41GSjemRhN7YaAMuEyA1OjBPFL3'})
+
+        if response.status_code == requests.codes.ok:
+            exercise_key = client.key('Exercises')
+            exercise_data = response.json()
+
+            for exercise_item in exercise_data:
+                exercise = datastore.Entity(key=exercise_key)
+
+                user = int(user_id)
+                name = exercise_item.get('name')
+                equipment = exercise_item.get('equipment')
+                instructions = exercise_item.get('instructions')
+
+                exercise['user_id'] = user
+                exercise['name'] = name
+                exercise['equipment'] = equipment
+                exercise['instructions'] = instructions
+
+                client.put(exercise)
+
+    # Fetch the stored exercises
+    query = client.query(kind='Exercises')
+    query.add_filter('user_id', '=', int(user_id))
+    exercises = list(query.fetch())
+
+    return json.dumps(exercises), 200
+
+
+"""
 @app.route('/users/<user_id>/exercises', methods=['GET'])
 def user_get_exercises(user_id):
 
@@ -87,28 +132,7 @@ def update_last_query_time(user_id, query_time):
         return json.dumps(exercises), 200
     else:
         return "Error: {} {}".format(response.status_code, response.text), response.status_code
-
-
-@app.route('/users/<user_id>/exercises', methods=['POST'])
-def create_exercise(user_id):
-    # Extract exercise data from the request body
-    exercise_data = request.get_json()
-    exercise_name = exercise_data.get('name')
-    exercise_duration = exercise_data.get('duration')
-
-    # Create a new Exercise entity
-    exercise_key = client.key('Exercises')
-    exercise = datastore.Entity(key=exercise_key)
-    exercise['user_id'] = int(user_id)
-    exercise['name'] = exercise_name
-    exercise['duration'] = exercise_duration
-    
-    # Save the exercise entity to Datastore
-    client.put(exercise)
-    
-    return 'Exercise created successfully'
-
-
+"""
 @app.route('/users', methods=['POST'])
 def users_post():
 
