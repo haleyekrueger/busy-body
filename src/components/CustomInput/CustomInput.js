@@ -1,6 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import React from 'react';
 
+
 const customInput = ({value, setValue, placeholder, error, onFocus = () => {}, secureTextEntry}) => {
     const [isFocused, setIsFocused] = React.useState(false);
     return (
@@ -17,8 +18,7 @@ const customInput = ({value, setValue, placeholder, error, onFocus = () => {}, s
             }}
             onBlur={() => setIsFocused(false)}
             />
-
-        
+    
         
         {error && (
         <Text style={{ color: 'red', fontSize: 12}}>
@@ -32,19 +32,25 @@ const customInput = ({value, setValue, placeholder, error, onFocus = () => {}, s
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        width: '100%',
+        backgroundColor: 'rgba(255, 255, 255, 0.65)',
+        width: '80%',
 
-        borderColor: '#e8e8e8',
+        borderColor: 'rgba(181, 181, 181, 0.05)',
         borderWidth: 1,
         borderRadius: 5,
 
         paddingHorizontal: 10,
-        marginVertical: 3,
+        marginVertical: 6,
+
+        
        },
     input: {
-        backgroundColor: 'white',
-        height: 40
+        backgroundColor: 'rgba(255, 255, 255, 0.65)',
+       
+        height: 30,
+        textAlign: 'center',
+        fontStyle: 'italic',
+        color: '#7755FF',
     },
 })
 export default customInput;
