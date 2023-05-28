@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation} from '@react-navigation/core'
 
 import CustomInput from '../../components/CustomInput';
@@ -8,7 +8,35 @@ import SocialSignInButton from '../../components/SocialSignInButtons';
 
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
-
+const config = {
+  backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
+}
+const body_type = "mesomorph";
+const age = 26; 
+const registerUser = async (username, password, age, body_type) => {
+  try {
+    const response = await fetch(`${config.backendUrl}/users`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password,
+        age,
+        body_type
+      }),
+    });
+    if (response.ok) {
+      return true;
+    } else {
+      const errorData = await response.json()
+      throw new Error(errorData.message)
+    }
+  } catch (error) {
+    throw new Error ('Registration failed.')
+  }
+}
 const SignUp = () => {
 
   const navigation = useNavigation();
@@ -17,8 +45,6 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [seePassword, setSeePassword] = useState(true);
- 
 
   const [errors, setErrors] = React.useState({});
   const [loading, setLoading] = React.useState(false);
@@ -81,8 +107,13 @@ const SignUp = () => {
   };
 
 
-  const onRegisterPressed = () => {
-    navigation.navigate('ConfirmEmail')
+  const onRegisterPressed = async() => {
+    try{
+      await registerUser(username, password, age, body_type);
+      navigation.navigate('ConfirmEmail')
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const onTermsOfUsePressed = () => {
@@ -96,42 +127,6 @@ const SignUp = () => {
   const onSignInPress = () => {
     navigation.navigate('Login')
   };
-  
-/*
-  const checkPasswordValidity = value => {
-    const isNonWhiteSpace = /^\S*$/;
-    if (!isNonWhiteSpace.test(value)) {
-      return 'Password must not contain Whitespaces.';
-    }
-
-    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
-    if (!isContainsUppercase.test(value)) {
-      return 'Password must have at least one Uppercase Character.';
-    }
-
-    const isContainsLowercase = /^(?=.*[a-z]).*$/;
-    if (!isContainsLowercase.test(value)) {
-      return 'Password must have at least one Lowercase Character.';
-    }
-
-    const isContainsNumber = /^(?=.*[0-9]).*$/;
-    if (!isContainsNumber.test(value)) {
-      return 'Password must contain at least one Digit.';
-    }
-
-    const isValidLength = /^.{8,16}$/;
-    if (!isValidLength.test(value)) {
-      return 'Password must be 8-16 Characters Long.';
-    }
-
-    // const isContainsSymbol =
-    //   /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
-    // if (!isContainsSymbol.test(value)) {
-    //   return 'Password must contain at least one Special Symbol.';
-    // }
-
-    return null;
-  };*/
 
   const handleOnchange = (text, input) => {
     setInputs(prevState => ({...prevState, [input]: text}));
@@ -140,7 +135,7 @@ const SignUp = () => {
     setErrors(prevState => ({...prevState, [input]: error}));
   };
 
-  
+
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
@@ -148,6 +143,7 @@ const SignUp = () => {
 
             <CustomInput 
             placeholder="Username"
+         
             value={username}
             onChangeText={setUsername}
             setValue={setUsername}
@@ -156,6 +152,7 @@ const SignUp = () => {
 
             <CustomInput
             placeholder="Email"
+            
             value={email}
             onChangeText={text => handleOnchange(text, 'email')}
             onFocus={() => handleError(null, 'email')}
@@ -186,20 +183,13 @@ const SignUp = () => {
 
             <CustomButton 
             text="Register" 
-            //onPress={onRegisterPressed}
             onPress={validate}
             />
 
-            <Text style={styles.text}>
-              By registering, you are agreeing to the{''}
-              <Text style={styles.link} onPress={onTermsOfUsePressed}> Terms of use</Text> and{''}
-              <Text style={styles.link} onPress={onPrivacyPressed}> Privacy Policy </Text>
-            </Text>
-
-            <SocialSignInButton/>
+           
 
             <CustomButton
-            text="Already have an account? Sign in"
+            text="Already have an account? Sign intest"
             onPress={onSignInPress}
             type="TERTIARY"
             />
