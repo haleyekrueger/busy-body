@@ -89,13 +89,16 @@ const onSignInPressed = async () => {
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
-            <Image 
+            {/*<Image 
             source={Logo} 
             style={[styles.logo, {height: height * .2}]} 
             resizeMode="contain"
-            />
+    /> */}
+
+            <Text style={styles.title}> BUSY BODY </Text> 
+           
           
-            <CustomInput 
+            <CustomInput
               placeholder="Username" 
               value={username} 
               setValue={setUsername}/>
@@ -106,26 +109,10 @@ const onSignInPressed = async () => {
 
             <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
 
-            <CustomButton
-              text="Sign In with Facebook" 
-              bgColor='#E7EAF4'
-              fgColor='#4765A9'
-              onPress={onSignInFacebook} />
+           
 
             <CustomButton 
-              text="Sign In with Google" 
-              bgColor='#fae9ea'
-              fgColor='#dd4d44'
-              onPress={onSignInGoogle} />
-
-            <CustomButton 
-              text="Sign In with Apple" 
-              bgColor='#535353'
-              fgColor='#F9F6F6'
-              onPress={onSignInApple} />
-
-            <CustomButton 
-              text="Don't have an account? Create one" 
+              text="New User? Create one" 
               onPress={onSignUpPressed}
               type="TERTIARY"
             />
@@ -139,13 +126,30 @@ const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
     padding: 40,
-    backgroundColor: "white",
+    backgroundColor: '#B455FF',
   },
   logo: {
     width: '70%',
     maxWidth: 300,
     height: 100,
     marginBottom: 5,
+  },
+  title: {
+    fontSize: 55,
+    width: 200,
+    height: 180,
+    fontFamily: 'Raleway',
+    fontStyle: 'italic',
+    fontWeight: 900,   
+    alignItems: 'center',
+    flexDirection: 'column',
+    lineHeight: 55, 
+    textAlign: 'center',
+    letterSpacing: 0,
+    color: 'white',
+  },
+  background: {
+    backgroundColor: 'red',
   },
 });
 export default LoginScreen;
