@@ -127,7 +127,7 @@ function StackNavigation() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="ConfirmEmail" component={ConfirmEmail} />
+      <Stack.Screen name="ConfirmEmail" component={ConfirmEmail}/>
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="Survey" component={Survey} />
