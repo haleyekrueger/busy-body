@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-
+import { useRoute } from '@react-navigation/native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButton from '../../components/SocialSignInButtons';
@@ -9,13 +9,16 @@ import SocialSignInButton from '../../components/SocialSignInButtons';
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 
+
 const ConfirmEmail = () => {
+  const route = useRoute();
+  const { userID } = route.params;
   const [code, setCode] = useState('');
 
   const navigation=useNavigation();
 
   const onConfirmPressed = () => {
-    navigation.navigate('Survey')
+    navigation.navigate('Survey', {userID})
   };
 
   const onResendPressed = () => {

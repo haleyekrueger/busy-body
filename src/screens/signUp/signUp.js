@@ -28,7 +28,10 @@ const registerUser = async (username, password, age, body_type) => {
       }),
     });
     if (response.ok) {
-      return true;
+      const responseData = await response.json()
+      console.log(responseData.id, 1)
+      const userID = responseData.id
+      return { success: true, userID}
     } else {
       const errorData = await response.json()
       throw new Error(errorData.message)
@@ -37,6 +40,7 @@ const registerUser = async (username, password, age, body_type) => {
     throw new Error ('Registration failed.')
   }
 }
+
 const SignUp = () => {
 
   const navigation = useNavigation();
@@ -49,8 +53,14 @@ const SignUp = () => {
 
   const onRegisterPressed = async() => {
     try{
-      await registerUser(username, password, age, body_type);
-      navigation.navigate('ConfirmEmail')
+      const response = await registerUser(username, password, age, body_type);
+      console.log(response.userID, 2);
+      if (response.success) {
+        console.log(response.userID,3)
+      navigation.navigate('ConfirmEmail',
+        { userID : response.userID },
+      );
+    }
     } catch (error) {
       console.error(error)
     }
