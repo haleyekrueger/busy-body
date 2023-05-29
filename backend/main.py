@@ -1,7 +1,10 @@
 from google.cloud import datastore
-from flask import Flask, request, json, url_for, make_response
+from flask import Flask, request, json, url_for, make_response, jsonify
 import json
 import constants
+import requests
+from datetime import datetime, timedelta
+
 #from json2html import json2html
 
 app = Flask(__name__)
@@ -18,6 +21,118 @@ def index():
     - age must be between 14 and 115
     - body_type must be either "endomorph", "ectomorph", or "mesomorph"
  """
+app = Flask(__name__)
+
+from datetime import datetime, timedelta
+
+app = Flask(__name__)
+
+@app.route('/users/<user_id>/exercises', methods=['GET'])
+def user_get_exercises(user_id):
+
+    # Check if exercises already exist for the user
+    query = client.query(kind='Exercises')
+    query.add_filter('user_id', '=', int(user_id))
+    existing_exercises = list(query.fetch())
+
+    if not existing_exercises:
+        # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
+        muscle = 'biceps'
+        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+        response = requests.get(api_url, headers={'X-Api-Key': '9SsEQoSFfHYgG41GSjemRhN7YaAMuEyA1OjBPFL3'})
+
+        if response.status_code == requests.codes.ok:
+            exercise_key = client.key('Exercises')
+            exercise_data = response.json()
+
+            for exercise_item in exercise_data:
+                exercise = datastore.Entity(key=exercise_key)
+
+                user = int(user_id)
+                name = exercise_item.get('name')
+                equipment = exercise_item.get('equipment')
+                instructions = exercise_item.get('instructions')
+
+                exercise['user_id'] = user
+                exercise['name'] = name
+                exercise['equipment'] = equipment
+                exercise['instructions'] = instructions
+
+                client.put(exercise)
+
+    # Fetch the stored exercises
+    query = client.query(kind='Exercises')
+    query.add_filter('user_id', '=', int(user_id))
+    exercises = list(query.fetch())
+
+    return json.dumps(exercises), 200
+
+
+"""
+@app.route('/users/<user_id>/exercises', methods=['GET'])
+def user_get_exercises(user_id):
+
+    # Check if a week has passed since the previous query
+    #last_query_time = get_last_query_time(user_id)
+    #current_time = datetime.now()
+    #if last_query_time is not None and current_time - last_query_time < timedelta(weeks=1):
+    #    exercises = retrieve_exercises(user_id)
+    #    return jsonify(response), 200  # Return stored exercise data if within a week
+
+    # Update the last query time
+    #update_last_query_time(user_id, current_time)
+
+    # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
+    """
+def get_last_query_time(user_id):
+    query_key = client.key('LastQueryTime', user_id)
+    last_query_time_entity = client.get(query_key)
+    if last_query_time_entity is not None:
+        return last_query_time_entity['time']
+    return None
+
+def update_last_query_time(user_id, query_time):
+    query_key = client.key('LastQueryTime', user_id)
+    last_query_time_entity = datastore.Entity(key=query_key)
+    last_query_time_entity['time'] = query_time
+    client.put(last_query_time_entity)
+"""
+    muscle = 'biceps'
+    api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+    response = requests.get(api_url, headers={'X-Api-Key': '9SsEQoSFfHYgG41GSjemRhN7YaAMuEyA1OjBPFL3'})
+    
+    if response.status_code == requests.codes.ok:
+        # put data from external api into busy body api
+        exercise_key = client.key('Exercises')
+        exercise = datastore.Entity(key=exercise_key)
+        exercise_data = response.json()
+
+
+        for exercise_item in exercise_data:
+            exercise = datastore.Entity(key=exercise_key)
+
+        user = int(user_id)
+        name = exercise_item.get('name')
+        equipment = exercise_item.get('equipment')
+        instructions = exercise_item.get('instructions')
+
+        exercise['user_id'] = user
+        exercise['name'] = name
+        exercise['equipment'] = equipment
+        exercise['instructions'] = instructions
+
+        client.put(exercise)
+
+        # retrieve the data we just stored
+        query = client.query(kind='Exercises')
+        query.add_filter('user_id', '=', int(user_id))
+        exercises = list(query.fetch())
+    
+
+        return json.dumps(exercises), 200
+    else:
+        return "Error: {} {}".format(response.status_code, response.text), response.status_code
+"""
 @app.route('/users', methods=['POST'])
 def users_post():
 
