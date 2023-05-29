@@ -50,6 +50,66 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
+  const [errors, setErrors] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
+
+  const validate = () => {
+
+    handleError(null, 'email');
+    handleError(null, 'password');
+    handleError(null, 'repeatPassword');
+    //Keyboard.dismiss();
+    let isValid = true;
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if (!email) {
+      handleError('Please input an email', 'email');
+      isValid = false;
+    } else if (reg.test(email) === false) {
+
+      handleError('Please input a valid email', 'email');
+      isValid = false;
+    }
+
+    if (!password) {
+      handleError('Please input password', 'password');
+      isValid = false;
+    } else if (password.length < 5) {
+      handleError('Password must be greater than 5 characters', 'password');
+      isValid = false;
+    }
+
+    const isNonWhiteSpace = /^\S*$/;
+    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
+    const isContainsNumber = /^(?=.*[0-9]).*$/;
+
+    if (!isNonWhiteSpace.test(password)) {
+      handleError('Password must not contain whitespace', 'password');
+      isValid = false;
+    }
+
+    if (!isContainsUppercase.test(password)) {
+      handleError('Password must have at least 1 uppercase letter', 'password');
+      isValid = false;
+    }
+
+    if (!isContainsNumber.test(password)) {
+      handleError('Password must contain at least 1 number', 'password');
+      isValid = false;
+    }
+
+    if (password != repeatPassword) {
+      console.log("not the same passwords")
+      handleError('Passwords do not match', 'repeatPassword');
+      isValid = false;      
+    }
+
+    if (isValid) {
+      //register();
+      console.log("valid");
+    }
+  };
+
 
   const onRegisterPressed = async() => {
     try{
@@ -78,6 +138,13 @@ const SignUp = () => {
     navigation.navigate('Login')
   };
 
+  const handleOnchange = (text, input) => {
+    setInputs(prevState => ({...prevState, [input]: text}));
+  };
+  const handleError = (error, input) => {
+    setErrors(prevState => ({...prevState, [input]: error}));
+  };
+
 
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -86,40 +153,50 @@ const SignUp = () => {
 
             <CustomInput 
             placeholder="Username"
+         
             value={username}
+            onChangeText={setUsername}
             setValue={setUsername}
+            secureTextEntry={false}
             />
 
             <CustomInput
             placeholder="Email"
+            
             value={email}
+            onChangeText={text => handleOnchange(text, 'email')}
+            onFocus={() => handleError(null, 'email')}
             setValue={setEmail}
+            secureTextEntry={false}
+            error={errors.email}
             />
 
             <CustomInput
             placeholder="Password"
             value={password}
+            onChangeText={text => handleOnchange(text, 'password')}
+            onFocus={() => handleError(null, 'password')}
             setValue={setPassword}
+            secureTextEntry={true}
+            error={errors.password}
             />
 
             <CustomInput
             placeholder="Re-enter Password"
             value={repeatPassword}
+            onChangeText={text => handleOnchange(text, 'repeatPassword')}
+            onFocus={() => handleError(null, 'repeatPassword')}
             setValue={setRepeatPassword}
+            secureTextEntry={true}
+            error={errors.repeatPassword}
             />      
 
             <CustomButton 
             text="Register" 
-            onPress={onRegisterPressed}
+            onPress={validate}
             />
 
-            <Text style={styles.text}>
-              By registering, you are agreeing to the{''}
-              <Text style={styles.link} onPress={onTermsOfUsePressed}> Terms of use</Text> and{''}
-              <Text style={styles.link} onPress={onPrivacyPressed}> Privacy Policy </Text>
-            </Text>
-
-            <SocialSignInButton/>
+           
 
             <CustomButton
             text="Already have an account? Sign intest"

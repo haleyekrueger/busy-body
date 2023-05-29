@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 
         alignItems: 'center',
         borderRadius: 5
+
     },
 
     container_PRIMARY: {
@@ -53,11 +54,11 @@ const styles = StyleSheet.create({
     },
 
     text_SECONDARY: {
-        color: 'gray'
+        color: 'white'
     },
 
     text_TERTIARY: {
-        color: 'gray'
+        color: 'white'
     },
 
   
