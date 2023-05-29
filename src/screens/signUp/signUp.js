@@ -113,6 +113,7 @@ const SignUp = () => {
 
   const onRegisterPressed = async() => {
     try{
+      await validate();
       const response = await registerUser(username, password, age, body_type);
       console.log(response.userID, 2);
       if (response.success) {
@@ -193,7 +194,7 @@ const SignUp = () => {
 
             <CustomButton 
             text="Register" 
-            onPress={validate}
+            onPress={onRegisterPressed}
             />
 
            
