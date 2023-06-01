@@ -7,16 +7,17 @@ const customInput = ({value, setValue, placeholder, error, onFocus = () => {}, s
     return (
         <View style={styles.container}>
             <TextInput 
-            value={value}
-            onChangeText={setValue}
-            placeholder={placeholder}
-            style={styles.input}
-            secureTextEntry={secureTextEntry}
-            onFocus={() => {
-                onFocus();
-                setIsFocused(true);
-            }}
-            onBlur={() => setIsFocused(false)}
+                value={value}
+                onChangeText={setValue}
+                placeholder={placeholder}
+                placeholderTextColor='#858585'
+                style={styles.input}
+                secureTextEntry={secureTextEntry}
+                onFocus={() => {
+                    onFocus();
+                    setIsFocused(true);
+                }}
+                onBlur={() => setIsFocused(false)}
             />
     
         
@@ -32,6 +33,7 @@ const customInput = ({value, setValue, placeholder, error, onFocus = () => {}, s
 
 const styles = StyleSheet.create({
     container: {
+        
         backgroundColor: 'rgba(255, 255, 255, 0.65)',
         width: '80%',
 
@@ -39,18 +41,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
 
-        paddingHorizontal: 10,
-        marginVertical: 6,
+        padding: 5,
+        marginVertical: 10,
 
         
        },
     input: {
         backgroundColor: 'rgba(255, 255, 255, 0.65)',
-       
+        fontWeight: 'bold',
         height: 30,
         textAlign: 'center',
         fontStyle: 'italic',
-        color: '#7755FF',
+        color: '#2b2b2b',
     },
 })
 export default customInput;

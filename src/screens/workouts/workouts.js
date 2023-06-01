@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
@@ -100,6 +100,7 @@ const WorkoutScreen = () => {
 
 const styles = StyleSheet.create({
   root: {
+    flex: 1,
     alignItems: 'center',
     padding: 40,
     backgroundColor: 'white',
