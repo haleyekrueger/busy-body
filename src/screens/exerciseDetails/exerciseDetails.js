@@ -152,6 +152,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
+
   },
   instructions: {
     textAlign: 'left',
