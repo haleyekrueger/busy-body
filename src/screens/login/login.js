@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, useWindowDimensions, ScrollView } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
+import styles from '../../customStyleSheet'
 
 const config = {
   backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
@@ -65,18 +66,6 @@ const onSignInPressed = async () => {
 // hits a PATCH endpoint and allows the user to update their password
   }
 
-  const onSignInFacebook = () => {
-    console.warn('Sign in Facebook');
-  }
-
-  const onSignInGoogle = () => {
-    console.warn('Sign in Google');
-  }
-
-  const onSignInApple = () => {
-    console.warn('Sign in Apple');
-  }
-
   const onSignUpPressed = () => {
     navigation.navigate('SignUp')
     // this will send a CREATE request to Users api
@@ -86,16 +75,11 @@ const onSignInPressed = async () => {
   const navigation = useNavigation();
 
     return (
+    <SafeAreaView style ={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
-            {/*<Image 
-            source={Logo} 
-            style={[styles.logo, {height: height * .2}]} 
-            resizeMode="contain"
-    /> */}
-
-            <Text style={styles.title}> BUSY BODY </Text> 
-           
+    
+            <Text style={titleStyle.title}> BUSY BODY </Text> 
           
             <CustomInput
               placeholder="Username" 
@@ -108,36 +92,24 @@ const onSignInPressed = async () => {
 
             <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
 
-           
-
             <CustomButton 
-              text="New User? Create one" 
+              text="New user? Create an account" 
               onPress={onSignUpPressed}
               type="TERTIARY"
             />
 
         </View>
-        </ScrollView>
+      </ScrollView>
+    </SafeAreaView>  
     );
 };
 
-const styles = StyleSheet.create({
-  root: {
-    alignItems: 'center',
-    padding: 40,
-    backgroundColor: '#B455FF',
-  },
-  logo: {
-    width: '70%',
-    maxWidth: 300,
-    height: 100,
-    marginBottom: 5,
-  },
+const titleStyle = StyleSheet.create({
   title: {
+    marginTop: 20,
     fontSize: 55,
     width: 200,
     height: 180,
-    fontFamily: 'Raleway',
     fontStyle: 'italic',
     fontWeight: 900,   
     alignItems: 'center',
@@ -147,8 +119,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     color: 'white',
   },
-  background: {
-    backgroundColor: 'red',
-  },
 });
+
+
 export default LoginScreen;

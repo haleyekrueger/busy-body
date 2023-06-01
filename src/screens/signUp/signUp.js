@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useNavigation} from '@react-navigation/core'
+import { View, Text, useWindowDimensions, SafeAreaView, ScrollView } from 'react-native';
 
+import { useNavigation} from '@react-navigation/core'
+import styles from '../../customStyleSheet'
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 
@@ -38,6 +39,8 @@ const registerUser = async (username, password, age, body_type) => {
     throw new Error ('Registration failed.')
   }
 }
+
+
 
 const SignUp = () => {
 
@@ -137,8 +140,10 @@ const SignUp = () => {
     setErrors(prevState => ({...prevState, [input]: error}));
   };
 
+  const {height, width} = useWindowDimensions();
 
     return (
+    <SafeAreaView style ={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
             <Text style={styles.title}>Create Account</Text>
@@ -188,38 +193,18 @@ const SignUp = () => {
             onPress={onRegisterPressed}
             />
 
-           
 
             <CustomButton
-            text="Already have an account? Sign intest"
+            text="Already have an account? Sign in"
             onPress={onSignInPress}
             type="TERTIARY"
             />
 
         </View>
-        </ScrollView>
+      </ScrollView>
+    </SafeAreaView>  
     )
 };
-
-const styles = StyleSheet.create({
-  root: {
-    alignItems: 'center',
-    padding: 40
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    margin: 10,
-  },
-  text: {
-    color: '#a6a6a6',
-    marginVertical: 10,
-  },
-  link: {
-    color: '#ffcc00',
-  
-  }
-});
 
 
 export default SignUp;
