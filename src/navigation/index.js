@@ -25,6 +25,10 @@ import ConfirmEmail from '../screens/confirmEmail';
 import ForgotPassword from '../screens/forgotPassword';
 import ResetPassword from '../screens/resetPassword';
  
+// Resources: https://github.com/react-navigation/react-navigation/issues/1340
+//          https://reactnavigation.org/docs/stack-navigator/
+
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +43,7 @@ function WorkoutNavigation () {
       <Stack.Navigator>
       
           <Stack.Screen 
+             
               name="Workouts"
               component={Workouts}
               initialParams = {{users, user, userID}}
@@ -49,11 +54,18 @@ function WorkoutNavigation () {
               initialParams = {{users, user, userID}}
           /> 
           <Stack.Screen 
+              options= {{
+              headerTintColor: 'black'
+              }}
               name="ExerciseDetails"
               component={ExerciseDetails}
               initialParams = {{exercise_list, user}} 
+           
           />   
          <Stack.Screen 
+              options= {{
+              headerTintColor: 'black'
+              }}
               name="ExerciseInstructions"
               component={ExerciseInstructions}
               initialParams = {{exercise}} 

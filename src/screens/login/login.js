@@ -33,8 +33,6 @@ const onSignInPressed = async () => {
   try {
     const response = await fetch(`${config.backendUrl}/users`);
     const users = await response.json();
-
-    console.log(users);
   
     const usernameInput = username;
     const passwordInput = password;

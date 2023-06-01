@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, Image, SafeAreaView, ScrollView } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
+import styles from '../../customStyleSheet'
+
 
 const config = {
   backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
@@ -76,41 +78,29 @@ const WorkoutScreen = () => {
   // map through the weekly workouts to display each day
   // click on a workout to navigate to exercise info screen
   return (
+  <SafeAreaView style={styles.container}>
     <View style={styles.root}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <Text> You have {frequency} workouts this week. Click 
+        <Text style={styles.largerText}> You have {frequency} workouts this week. Click 
         a day below to view the workout for that day.
         </Text>
         
         {weeklyExercises.map((exercise_list, index) => (
-          <View key={index}>
+          <View key={index} style={styles.subRoot}>
           <CustomButton
             text= {`Day ${index + 1}`} 
             key={index}
             onPress={() => onViewPressed(exercise_list)}
-            type="TERTIARY"
+            type="PRIMARY"
           />
           </View>
         
         ))}
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 40,
-    backgroundColor: 'white',
-  },
-  logo: {
-    width: '70%',
-    maxWidth: 300,
-    height: 100,
-    marginBottom: 5,
-  },
-});
 
 export default WorkoutScreen;

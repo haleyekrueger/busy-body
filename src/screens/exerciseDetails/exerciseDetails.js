@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, Alert, useWindowDimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Card } from 'react-native-elements';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
+import { Divider } from '@rneui/themed';
+
 
 
 //resources: https://reactnative.dev/docs/checkbox.html
@@ -12,6 +14,9 @@ import { Ionicons } from '@expo/vector-icons';
 //           https://www.geeksforgeeks.org/create-a-card-view-in-react-native-using-react-native-paper/
 //           https://medium.com/@athletecoder/avoid-usecontext-to-handle-your-global-state-in-react-c12454356e2a
 //           https://reactnative.dev/docs/alert
+//           https://reactnativeelements.com/docs/components/divider
+//           https://stackoverflow.com/questions/48590924/align-close-button-on-top-right-corner-of-imagebackground-react-native
+
 
 
 const ExerciseDetails = () => {
@@ -68,20 +73,22 @@ const ExerciseDetails = () => {
   // need to add an onlick to the instructions
   // add edit here as well and delete
   return (
-    <View style={styles.root}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+  <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.root}>
         {exercise_list.map((exercise, index) => (
-          <View key={index} style={styles.exercise}>
+          <Card key={index} containerStyle={styles.card}>
             <Text style={styles.title}>{exercise.name}</Text>
-            <Text>Sets: {exercise.sets}</Text>
-            <Text>Reps: {exercise.reps}</Text>
-            <CustomButton
-                text='instructions'
-                // type='TERTIARY'
-                onPress={() => onInstructionsPressed(exercise)}
-            />
-        
-            <CheckBox style={styles.checkbox}
+            <Divider style={styles.divider} inset={true} insetType="right"/>
+            <Text style={styles.text}>Sets: {exercise.sets}</Text>
+            <Text style={styles.text}>Reps: {exercise.reps}</Text>
+            <TouchableOpacity style={styles.instructions}
+            onPress={() => onInstructionsPressed(exercise)}>
+                <Text style={styles.text}>View Instructions</Text>
+            </TouchableOpacity>
+              
+            <View style={styles.checkbox}>
+            <CheckBox 
               title="Completed"
               checked={checkedExercise[index]}
               onPress={() => handleCheckbox(index)}
@@ -100,52 +107,115 @@ const ExerciseDetails = () => {
                 />
               }
             />
+            </View>
             
-              <CustomButton
-                text='edit'
-                // type='TERTIARY'
+            <Feather 
+                style={styles.editIcon}
+                name="edit" 
+                size={24} 
+                color="white" 
                 onPress={() => onEditPressed(exercise)}
             />
-              <CustomButton
-                text='delete'
-                // type='TERTIARY'
+            
+              <AntDesign 
+                style={styles.deleteIcon}
+                name="delete" 
+                size={24} 
+                color="white" 
                 onPress={() => onDeletePressed(exercise)}
             />
             
-          </View>
+          </Card>
           
         ))}
+    
+        </View>
+        
       </ScrollView>
-      <CustomButton text="Save" onPress={onSavePressed} />
+    <View style={styles.buttonContainer}>
+    <CustomButton text="Save" onPress={onSavePressed} />
     </View>
+  </SafeAreaView>
   );
 
 };
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+  },
   root: {
-    // alignItems: 'center',
-    // backgroundColor: 'white',
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    justifyContent: 'center',
+  },
+  instructions: {
+    textAlign: 'left',
+    justifyContent: 'left',
+    fontSize: 20,
+    color: 'white',
+    marginTop: 10,
+    marginBottom: 10,
+    
+  },
+  divider: {
+    backgroundColor: 'white',
+    height: 1,
+    marginBottom: 15,
+    marginLeft: 10,
+    width: '90%',
   },
   title: {
-  
+    textAlign: 'left',
+    borderBottomWidth: 5,
+    borderBottomColor: 'black',
+    fontWeight: 'bold',
+    fontSize: 25,
+    color: 'white',
+    marginTop: 10,
+    marginLeft: 10,
+    marginBottom: 10,
+    
+  },
+  text: {
     textAlign: 'left',
     fontWeight: 'bold',
-    fontSize: 18
-
+    fontSize: 18,
+    color: 'white',
+    marginLeft: 10,
+    
   },
-  exercise: {
-    padding: 20,
+  card: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold',
+    fontSize: 18,
+    backgroundColor: '#B455FF',
+    borderRadius: 10,
   },
   checkbox: {
-    justifyContent: 'center',
-    // alignItems: 'center',
-    backgroundColor: '#a84cd9',
-    borderRadius: 5,
-
-
-  }
+    justifyContent: 'left'
+  },
+  editIcon: {
+    position: 'absolute',
+    left: 250,
+    right: 0,
+    top: 12,
+    bottom: 0
+    
+  },
+  deleteIcon: {
+    position: 'absolute',
+    left: 285,
+    right: 0,
+    top: 12,
+    bottom: 0
+    
+  },
 
 });
 
