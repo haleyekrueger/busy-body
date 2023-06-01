@@ -4,7 +4,6 @@ import {useNavigation} from '@react-navigation/core';
 import { useRoute } from '@react-navigation/native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import SocialSignInButton from '../../components/SocialSignInButtons';
 
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY

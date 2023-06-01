@@ -6,25 +6,24 @@ import { useRoute } from '@react-navigation/native';
 
 
 //import for survey
-import Survey from '../../screens/survey';
+import Survey from '../screens/survey';
 
-//imports for workotus
-import ViewWorkouts from '../../screens/viewWorkouts';
-import EditWorkouts from '../../screens/editWorkouts';
-import ExerciseDetails from '../../screens/exerciseDetails';
+//imports for workouts
+import EditWorkouts from '../screens/editWorkouts';
+import ExerciseDetails from '../screens/exerciseDetails';
+import ExerciseInstructions from '../screens/exerciseInstructions'
 
 // imports for tab
-import Home from '../../screens/home';
-import Workouts from '../../screens/workouts';
-import Stats from '../../screens/stats';
-import Profile from '../../screens/profile';
+import Home from '../screens/home';
+import Workouts from '../screens/workouts';
+import Profile from '../screens/profile';
 
 // imports for stack
-import Login from '../../screens/login';
-import SignUp from '../../screens/signUp';
-import ConfirmEmail from '../../screens/confirmEmail';
-import ForgotPassword from '../../screens/forgotPassword';
-import ResetPassword from '../../screens/resetPassword';
+import Login from '../screens/login';
+import SignUp from '../screens/signUp';
+import ConfirmEmail from '../screens/confirmEmail';
+import ForgotPassword from '../screens/forgotPassword';
+import ResetPassword from '../screens/resetPassword';
  
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,7 +33,7 @@ const Stack = createNativeStackNavigator();
 function WorkoutNavigation () {
 
   const route = useRoute();
-  const {userID, bodyType, experienceLevel} = route.params;
+  const {exercise, exercise_list, users, user, userID} = route.params;
 
   return(
       <Stack.Navigator>
@@ -42,22 +41,22 @@ function WorkoutNavigation () {
           <Stack.Screen 
               name="Workouts"
               component={Workouts}
-              initialParams = {{userID, bodyType, experienceLevel}}
+              initialParams = {{users, user, userID}}
           />
           <Stack.Screen 
               name="EditWorkouts"
               component={EditWorkouts}
-              initialParams = {{userID, bodyType, experienceLevel}}
-          />
-          <Stack.Screen 
-              name="ViewWorkouts"
-              component={ViewWorkouts}
-              initialParams = {{userID, bodyType, experienceLevel}} 
+              initialParams = {{users, user, userID}}
           /> 
           <Stack.Screen 
               name="ExerciseDetails"
               component={ExerciseDetails}
-              initialParams = {{userID}} 
+              initialParams = {{exercise_list, user}} 
+          />   
+         <Stack.Screen 
+              name="ExerciseInstructions"
+              component={ExerciseInstructions}
+              initialParams = {{exercise}} 
           />   
       </Stack.Navigator>
   )
@@ -66,7 +65,7 @@ function WorkoutNavigation () {
 function TabNavigation () {
 
   const route = useRoute();
-  const {userID, bodyType, experienceLevel} = route.params;
+  const {exercise_list, users, user, userID} = route.params;
 
   return (
     <Tab.Navigator
@@ -86,7 +85,7 @@ function TabNavigation () {
       <Tab.Screen
         name="WorkoutNavigation"
         component={WorkoutNavigation}
-        initialParams={{userID, bodyType, experienceLevel}}
+        initialParams={{exercise_list, users, user, userID}}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons
@@ -110,7 +109,7 @@ function TabNavigation () {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        initialParams={{userID}}
+        initialParams={{users, user, userID}}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={24} color={color} />
@@ -127,11 +126,12 @@ function StackNavigation() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="ConfirmEmail" component={ConfirmEmail}/>
+      <Stack.Screen name="ConfirmEmail" component={ConfirmEmail} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="Survey" component={Survey} />
       <Stack.Screen name="TabNavigation" component={TabNavigation} />
+  
     </Stack.Navigator>
     </NavigationContainer>
   );
