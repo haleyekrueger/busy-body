@@ -70,8 +70,9 @@ function TabNavigation () {
   return (
     <Tab.Navigator
       screenOptions={{
+        
         tabBarShowLabel: false,
-        tabBarActiveTintColor: 'blue',
+        tabBarActiveTintColor: '#B455FF',
       }}>
       <Tab.Screen
         name="Home"
@@ -97,15 +98,7 @@ function TabNavigation () {
           headerShown: false
         }}
       />
-      <Tab.Screen
-        name="Stats"
-        component={Stats}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="fitness" size={24} color={color} />
-          ),
-        }}
-      />
+  
       <Tab.Screen
         name="Profile"
         component={Profile}
