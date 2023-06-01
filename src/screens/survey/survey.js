@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useRoute } from '@react-navigation/native';
 import CustomRadioButton from '../../components/CustomRadioButton';
 import CustomButton from '../../components/CustomButton';
+import styles from '../../customStyleSheet'
 
 const Survey = () => {
   // to get the userID passed from login screen
@@ -14,7 +15,7 @@ const Survey = () => {
   const bodyTypeOptions = ['Ectomorph', 'Mesomorph', 'Endomorph'];
   const [selectedBodyType, setSelectedBodyType] = useState(null);
 
-  const experienceLevelOptions = ['Beginner', 'Intermediate', 'Advanced'];
+  const experienceLevelOptions = ['3', '4', '5'];
   const [selectedExperienceLevel, setSelectedExperienceLevel] = useState(null);
 
   const handleSelectBodyType = (index) => {
@@ -44,45 +45,31 @@ const Survey = () => {
 
 
   return (
+  <SafeAreaView style ={styles.container}>
+
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
-        <Text style={styles.heading}>Please fill out the survey then press submit to access your workout plan</Text>
-        <Text style={styles.text}>Select your body type:</Text>
+        <Text style={styles.subtitle}>CUSTOMIZE YOUR PLAN</Text>
+        <Text style={styles.largerText}>Select your body type:</Text>
         <CustomRadioButton
           options={bodyTypeOptions}
           selectedOption={selectedBodyType}
           onSelect={handleSelectBodyType}
         />
 
-        <Text style={styles.text}>Select your experience level:</Text>
+        <Text style={styles.largerText}>Select the number of days you would like to work out each week:</Text>
         <CustomRadioButton
           options={experienceLevelOptions}
           selectedOption={selectedExperienceLevel}
           onSelect={handleSelectExperienceLevel}
         />
 
-        <CustomButton text="Submit" onPress={onSubmitPressed} type="SECONDARY" />
+        <CustomButton text="Submit" onPress={onSubmitPressed} type="PRIMARY" />
       </View>
     </ScrollView>
+  </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  root: {
-    alignItems: 'center',
-    padding: 40,
-    backgroundColor: 'white',
-  },
-  text: {
-   
-    padding: 8,
-    fontSize: 15
-  },
-  heading: {
-    fontWeight: 'bold',
-    padding: 8,
-    fontSize: 18
-  },
-});
 
 export default Survey;

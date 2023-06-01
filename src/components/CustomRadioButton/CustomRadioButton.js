@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
+
 const CustomRadioButton = ({ options, selectedOption, onSelect }) => {
   return (
     <View>
@@ -13,7 +14,7 @@ const CustomRadioButton = ({ options, selectedOption, onSelect }) => {
           <View
             style={[
               styles.radioButtonCircle,
-              { borderColor: selectedOption === index ? '#000' : '#ccc' },
+              { borderColor: selectedOption === index ? '#7235a1' : 'white' },
             ]}
           >
             {selectedOption === index && (
@@ -32,12 +33,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+   
   },
   radioButtonCircle: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    borderWidth: 2,
+    borderWidth: 3,
+  
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
@@ -46,10 +49,12 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#000',
+    backgroundColor: '#7235a1',
   },
   radioButtonLabel: {
-    fontSize: 15,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
 
