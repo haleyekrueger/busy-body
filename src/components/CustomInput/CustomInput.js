@@ -1,6 +1,8 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import React from 'react';
 
+// resources: https://stackoverflow.com/questions/40628114/react-native-cannot-write-first-letter-with-noncapital
+
 
 const customInput = ({value, setValue, placeholder, error, onFocus = () => {}, secureTextEntry}) => {
     const [isFocused, setIsFocused] = React.useState(false);
@@ -8,6 +10,9 @@ const customInput = ({value, setValue, placeholder, error, onFocus = () => {}, s
         <View style={styles.container}>
             <TextInput 
                 value={value}
+                autoCapitalize='none'
+                autoCorrect={false}
+                
                 onChangeText={setValue}
                 placeholder={placeholder}
                 placeholderTextColor='#858585'
