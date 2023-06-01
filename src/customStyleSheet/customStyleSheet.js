@@ -77,15 +77,34 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       fontSize: 15,
       fontWeight: 'bold',
-      padding: 15,
+      padding: 20,
+      marginLeft: 10,
+      marginRight: 10,
       textAlign: 'center',
     },
     largerText: {
       color: 'white',
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: 'bold',
       padding: 15,
+      marginLeft: 10,
+      marginRight: 10,
       textAlign: 'center',
+    },
+    buttonContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    card: {
+      borderRadius: 20
+    },
+    divider: {
+      backgroundColor: 'white',
+      height: 1,
+      marginTop: 15,
+      marginBottom: 15,
+      marginLeft: 10,
+      width: '90%',
     },
   });
 

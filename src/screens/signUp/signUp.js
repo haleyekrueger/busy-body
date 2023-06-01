@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import { View, Text, useWindowDimensions, SafeAreaView, ScrollView } from 'react-native';
-
+import { Card } from 'react-native-elements';
 import { useNavigation} from '@react-navigation/core'
 import styles from '../../customStyleSheet'
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
+import CustomRadioButton from '../../components/CustomRadioButton';
+import { Divider } from '@rneui/themed';
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 const config = {
@@ -142,11 +144,32 @@ const SignUp = () => {
 
   const {height, width} = useWindowDimensions();
 
+  // for displaying radio buttons for survey at end of sign up screen:
+  const bodyTypeOptions = ['Ectomorph', 'Mesomorph', 'Endomorph'];
+  const [selectedBodyType, setSelectedBodyType] = useState(null);
+
+  const experienceLevelOptions = ['3', '4', '5'];
+  const [selectedExperienceLevel, setSelectedExperienceLevel] = useState(null);
+
+  const handleSelectBodyType = (index) => {
+    setSelectedBodyType(index);
+  };
+
+  const handleSelectExperienceLevel = (index) => {
+    setSelectedExperienceLevel(index);
+  };
+
     return (
     <SafeAreaView style ={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
             <Text style={styles.title}>Create Account</Text>
+
+            <CustomButton
+            text="Already have an account? Sign in"
+            onPress={onSignInPress}
+            type="TERTIARY"
+            />
 
             <CustomInput 
             placeholder="Username"
@@ -187,21 +210,36 @@ const SignUp = () => {
             secureTextEntry={true}
             error={errors.repeatPassword}
             />      
+                    <Divider style={styles.divider} inset={true} insetType="center"/>
 
-            <CustomButton 
-            text="Register" 
-            onPress={onRegisterPressed}
-            />
+          <Text style={styles.largerText}>Select your body type:</Text>
 
+          <CustomRadioButton
+            options={bodyTypeOptions}
+            selectedOption={selectedBodyType}
+            onSelect={handleSelectBodyType}
+          />
+          <Divider style={styles.divider} inset={true} insetType="center"/>
 
-            <CustomButton
-            text="Already have an account? Sign in"
-            onPress={onSignInPress}
-            type="TERTIARY"
-            />
+          <Text style={styles.largerText}>Select the number of days you would like to work out each week:</Text>
+
+          <CustomRadioButton
+            options={experienceLevelOptions}
+            selectedOption={selectedExperienceLevel}
+            onSelect={handleSelectExperienceLevel}
+          />
+
+    
 
         </View>
       </ScrollView>
+
+      <View style={styles.buttonContainer}>
+      <CustomButton 
+            text="Register" 
+            onPress={onRegisterPressed}
+            />
+      </View>
     </SafeAreaView>  
     )
 };

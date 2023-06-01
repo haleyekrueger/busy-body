@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#7235a1',
   },
   radioButtonLabel: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
   },
