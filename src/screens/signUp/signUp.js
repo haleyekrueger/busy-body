@@ -4,8 +4,6 @@ import { useNavigation} from '@react-navigation/core'
 
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import SocialSignInButton from '../../components/SocialSignInButtons';
-
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 const config = {
@@ -127,13 +125,6 @@ const SignUp = () => {
     }
   };
 
-  const onTermsOfUsePressed = () => {
-    console.warn('Terms of use')
-  };
-
-  const onPrivacyPressed = () => {
-    console.warn('Privacy')
-  };
 
   const onSignInPress = () => {
     navigation.navigate('Login')
