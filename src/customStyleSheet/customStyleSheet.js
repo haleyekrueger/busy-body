@@ -1,19 +1,34 @@
 import {StyleSheet} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+
 
 // resources: https://blog.logrocket.com/complex-gradients-react-native-linear-gradient/
 //            https://www.figma.com/file/jw26dB840GZ7bE1DjoTwsm/Untitled?type=design&node-id=75-2&t=IQ0fedIqspDyoNx8-0
 
+
+
+
+
 const styles = StyleSheet.create({
+
     container: {
       flex: 1,
-      backgroundColor: '#B455FF',
+      padding: 0,
+      // backgroundColor: '#B455FF',
 
     },
+
+    blue: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+
+    },
+
     root: {
       alignItems: 'center',
       padding: 15,
       marginTop: 30,
+     
     },
     subRoot: {
       alignItems: 'center',
@@ -76,7 +91,7 @@ const styles = StyleSheet.create({
       color: 'white',
       marginVertical: 10,
       fontSize: 15,
-      fontWeight: 'bold',
+
       padding: 20,
       marginLeft: 10,
       marginRight: 10,
