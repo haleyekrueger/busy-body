@@ -4,6 +4,7 @@ import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import styles from '../../customStyleSheet'
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const config = {
@@ -78,9 +79,26 @@ const WorkoutScreen = () => {
   // map through the weekly workouts to display each day
   // click on a workout to navigate to exercise info screen
   return (
-  <SafeAreaView style={styles.container}>
-    <View style={styles.root}>
+    <LinearGradient style={styles.container}
+    colors={[
+      '#E4B9FF',
+      '#DA9EFF',
+      '#C86DFF',
+      '#B455FF',
+      '#A055FF',
+      '#9655FF',
+      '#7755FF',
+      '#7755FF',
+      '#6355FF',
+    ]}
+    start={{x: 0, y: 0}}
+    end={{x: .85, y: .75}}
+    locations={[.03, .09, .25, .38, .49, .59, .7, .8, .95]}
+  >
+
+   
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.root}>
         <Text style={styles.largerText}> You have {frequency} workouts this week. Click 
         a day below to view the workout for that day.
         </Text>
@@ -96,9 +114,10 @@ const WorkoutScreen = () => {
           </View>
         
         ))}
+        </View>
       </ScrollView>
-    </View>
-    </SafeAreaView>
+
+    </LinearGradient>
   );
 };
 

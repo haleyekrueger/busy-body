@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
+import { BlurView } from 'expo-blur';
+import {StyleSheet} from 'react-native';
 
 
 //import for survey
@@ -42,15 +44,20 @@ function WorkoutNavigation () {
   return(
       <Stack.Navigator>
       
-          <Stack.Screen 
-             
+          <Stack.Screen  
               name="Workouts"
               component={Workouts}
+              options={{
+                headerTintColor: 'transparent',
+                headerTransparent: true,
+            
+              }}
               initialParams = {{users, user, userID}}
           />
           <Stack.Screen 
               name="EditWorkouts"
               component={EditWorkouts}
+          
               initialParams = {{users, user, userID}}
           /> 
           <Stack.Screen 
@@ -59,6 +66,7 @@ function WorkoutNavigation () {
               }}
               name="ExerciseDetails"
               component={ExerciseDetails}
+            
               initialParams = {{exercise_list, user}} 
            
           />   
@@ -81,17 +89,27 @@ function TabNavigation () {
 
   return (
     <Tab.Navigator
+
       screenOptions={{
-        
         tabBarShowLabel: false,
-        tabBarActiveTintColor: '#B455FF',
+        tabBarActiveTintColor: '#7755FF',
+        tabBarInactiveTintColor: '#7755FF',
+        tabBarStyle: { position: 'absolute' },
+
+        tabBarBackground: () => (
+          <BlurView tint="light" intensity={70}
+          style={StyleSheet.absoluteFill}   />
+        ),
       }}>
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
+          headerTintColor: 'transparent',
+          headerTransparent: true,
+          headerBlurEffect: true,
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="home" size={24} color={color} />
+            <FontAwesome name="home" size={30} color={color} />
           ),
         }}
       />
@@ -103,7 +121,7 @@ function TabNavigation () {
           tabBarIcon: ({ color }) => (
             <MaterialIcons
               name="fitness-center"
-              size={24}
+              size={30}
               color={color}
             />
           ),
@@ -116,8 +134,11 @@ function TabNavigation () {
         component={Profile}
         initialParams={{users, user, userID}}
         options={{
+          headerTintColor: 'transparent',
+          headerTransparent: 'true',
+          headerBlurEffect: 'true',
           tabBarIcon: ({ color }) => (
-            <Ionicons name="person" size={24} color={color} />
+            <Ionicons name="person" size={30} color={color} />
           ),
         }}
       />
@@ -135,7 +156,9 @@ function StackNavigation() {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="Survey" component={Survey} />
-      <Stack.Screen name="TabNavigation" component={TabNavigation} />
+      <Stack.Screen
+          name="TabNavigation"
+          component={TabNavigation} />
   
     </Stack.Navigator>
     </NavigationContainer>

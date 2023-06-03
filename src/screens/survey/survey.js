@@ -109,6 +109,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import CustomRadioButton from '../../components/CustomRadioButton';
 import CustomButton from '../../components/CustomButton';
 import styles from '../../customStyleSheet';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const Survey = () => {
@@ -142,6 +143,22 @@ const Survey = () => {
 
 
   return (
+  <LinearGradient style={styles.container}
+    colors={[
+      '#E4B9FF',
+      '#DA9EFF',
+      '#C86DFF',
+      '#B455FF',
+      '#A055FF',
+      '#9655FF',
+      '#7755FF',
+      '#7755FF',
+      '#6355FF',
+    ]}
+    start={{x: 0, y: 0}}
+    end={{x: .85, y: .75}}
+    locations={[.03, .09, .25, .38, .49, .59, .7, .8, .95]}
+  >
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
@@ -166,6 +183,7 @@ const Survey = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
+  </LinearGradient>
   );
 };
 

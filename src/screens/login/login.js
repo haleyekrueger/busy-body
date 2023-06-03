@@ -4,12 +4,15 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../customStyleSheet'
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const config = {
   backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
 }
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
+//          https://www.youtube.com/watch?v=O5sI8oWVBR0
 
 const LoginScreen = () => {
   // request attributes username and password from Users entity on busy body 
@@ -33,6 +36,8 @@ const onSignInPressed = async () => {
   try {
     const response = await fetch(`${config.backendUrl}/users`);
     const users = await response.json();
+
+    console.log(users);
   
     const usernameInput = username;
     const passwordInput = password;
@@ -73,7 +78,23 @@ const onSignInPressed = async () => {
   const navigation = useNavigation();
 
     return (
-    <SafeAreaView style ={styles.container}>
+
+      <LinearGradient style={styles.container}
+        colors={[
+          '#E4B9FF',
+          '#DA9EFF',
+          '#C86DFF',
+          '#B455FF',
+          '#A055FF',
+          '#9655FF',
+          '#7755FF',
+          '#7755FF',
+          '#6355FF',
+        ]}
+        start={{x: 0, y: 0}}
+        end={{x: .85, y: .75}}
+        locations={[.03, .09, .25, .38, .49, .59, .7, .8, .95]}
+      >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
     
@@ -84,27 +105,42 @@ const onSignInPressed = async () => {
               value={username} 
               setValue={setUsername}/>
               
-            <CustomInput placeholder="Password" value={password} setValue={setPassword}/>
-
-            <CustomButton text="Sign In" onPress={onSignInPressed} />
-
-            <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
+         
+            <CustomInput 
+            placeholder="Password" value={password} setValue={setPassword}/>
+                        
 
             <CustomButton 
-              text="New user? Create an account" 
+           
+              text="Sign In" 
+              onPress={onSignInPressed} />
+
+            <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
+            <CustomButton 
+              text="New User? Create an account" 
               onPress={onSignUpPressed}
               type="TERTIARY"
             />
 
         </View>
+        
       </ScrollView>
-    </SafeAreaView>  
+      </LinearGradient>
     );
 };
 
 const titleStyle = StyleSheet.create({
+  blurContainer: {
+ 
+    width: '70%',
+    borderRadius: 100,
+    padding: 5,
+    marginVertical: 10,
+
+    
+   },
   title: {
-    marginTop: 20,
+    marginTop: 15,
     fontSize: 55,
     width: 200,
     height: 180,
