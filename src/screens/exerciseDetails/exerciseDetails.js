@@ -211,19 +211,34 @@ const ExerciseDetails = () => {
               />
 
               <View style={styles.modal}>
-              <View style={styles.blurContainer2}>
+              
          
               <Modal isVisible={exerciseModals[index]}>
-              <BlurView intensity={40} tint='light' style={styles.blurView3}>
-                {/* <View style={styles.modalContent}> */}
+             
+              <LinearGradient style={styles.modalContainer}
+                  colors={[
+                    '#E4B9FF',
+                    '#DA9EFF',
+                    '#C86DFF',
+                    '#B455FF',
+                    '#A055FF',
+                    '#9655FF',
+                    '#7755FF',
+                    '#7755FF',
+                    '#6355FF',
+                  ]}
+                  start={{x: 0, y: 0}}
+                  end={{x: .95, y: .98}}
+                  locations={[.03, .09, .25, .4, .55, .7, .85, .9, .99]}
+  > 
+               <View style={styles.modalContent}>
               <Text style={styles.LargerText}>{exercise.name}</Text>
-              <Divider style={styles.divider} inset={true} insetType="center"/>
-                
+      
                 <Text style={styles.modalText}>Sets:</Text>
                 <View style={styles.picker}>
                 <RNPickerSelect
                     placeholder= {{
-                        label: 'Update Sets'
+                        label: 'Update Sets...'
                       }}
                     onValueChange={(value) => handleSetsChange(value, index)}
                     items={[
@@ -241,19 +256,17 @@ const ExerciseDetails = () => {
                       placeholder: {
                       
                         
-                        fontSize: 18,
-                        marginTop: 10,
-                        marginBottom: 10,
+                        fontSize: 15,
+                        marginTop: 5,
+                        marginBottom: 5,
                         textAlign: 'center',
                         color: 'white',
                         alignItems: 'center',
                       },
                       inputIOS: {
-                  
-                        fontWeight: 'bold',
-                        fontSize: 18,
-                        marginTop: 10,
-                        marginBottom: 10,
+                        fontSize: 15,
+                        marginTop: 5,
+                        marginBottom: 5,
                         textAlign: 'center',
                         color: 'white',
                         alignItems: 'center',
@@ -271,9 +284,11 @@ const ExerciseDetails = () => {
 
                 <Text style={styles.modalText}>Reps:</Text>
                 {<View style={styles.picker}>
+              
                     <RNPickerSelect
+
                     placeholder= {{
-                        label: 'Update Reps'
+                        label: 'Update Reps...'
                       }}
                       
                     onValueChange={(value) => handleRepsChange(value, index)}
@@ -304,18 +319,17 @@ const ExerciseDetails = () => {
                   
                     style={{  
                       placeholder: {
-                        fontSize: 18,
-                        marginTop: 10,
-                        marginBottom: 10,
+                        fontSize: 15,
+                        marginTop: 5,
+                        marginBottom: 5,
                         textAlign: 'center',
                         color: 'white',
                         alignItems: 'center',
                       },
-                      inputIOS: {    
-                        fontWeight: 'bold',                
-                        fontSize: 18,
-                        marginTop: 10,
-                        marginBottom: 10,
+                      inputIOS: {                   
+                        fontSize: 15,
+                        marginTop: 5,
+                        marginBottom: 5,
                         textAlign: 'center',
                         color: 'white',
                         alignItems: 'center',
@@ -323,16 +337,19 @@ const ExerciseDetails = () => {
               
                     }}
                 />
+          
                 </View>}
+
             
                 <Divider style={styles.divider2} inset={true} insetType="center"/>
                 <CustomButton 
                   text="Save" onPress={() => handleModal(index)} />
-                  
-                  </BlurView>
+                
+                 </View>
+                 </LinearGradient>
               </Modal>
            
-              </View>
+         
 
               </View> 
 
@@ -372,6 +389,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
   },
+  modalContainer: {
+    borderRadius: 20,
+    marginRight: 30,
+    marginLeft: 30,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+  },
   editContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -384,19 +408,21 @@ const styles = StyleSheet.create({
   
     justifyContent: "center",
     alignItems: "center",
+    
   
 
     },
 
 
   modalContent: {
-    backgroundColor: "#d077fd",
-    padding: 5,
+  
+    
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    width: '75%',
-    marginLeft: 40,
+    textAlign: 'center',
+ 
+ 
  
     
   },
@@ -455,9 +481,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 1,
     marginBottom: 10,
-    marginTop: 20,
+    marginTop: 30,
     marginLeft: 10,
-    width: '90%',
+    width: '80%',
   },
 
   title: {
@@ -500,9 +526,11 @@ const styles = StyleSheet.create({
   },
   modalText: {
     textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     fontSize: 18,
     color: 'white',
-   
+    marginBottom: 10,
     marginTop: 10,
     
   },
@@ -554,9 +582,15 @@ const styles = StyleSheet.create({
 
    },
    picker: {
-    alignItems: 'center',
-    justifyContent: 'center',
 
+    alignItems: 'center',
+    textAlign: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderColor: 'white',
+    borderWidth: 1,
+    width: 150,
+    height: 35,
     borderRadius: 20,
     paddingLeft: 6,
     paddingRight: 6,
