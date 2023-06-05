@@ -7,11 +7,7 @@ import { BlurView } from 'expo-blur';
 import {StyleSheet} from 'react-native';
 
 
-//import for survey
-import Survey from '../screens/survey';
-
 //imports for workouts
-import EditWorkouts from '../screens/editWorkouts';
 import ExerciseDetails from '../screens/exerciseDetails';
 import ExerciseInstructions from '../screens/exerciseInstructions'
 
@@ -23,9 +19,6 @@ import Profile from '../screens/profile';
 // imports for stack
 import Login from '../screens/login';
 import SignUp from '../screens/signUp';
-import ConfirmEmail from '../screens/confirmEmail';
-import ForgotPassword from '../screens/forgotPassword';
-import ResetPassword from '../screens/resetPassword';
  
 // Resources: https://github.com/react-navigation/react-navigation/issues/1340
 //          https://reactnavigation.org/docs/stack-navigator/
@@ -53,12 +46,7 @@ function WorkoutNavigation () {
             
               }}
               initialParams = {{users, user, userID}}
-          />
-          <Stack.Screen 
-              name="EditWorkouts"
-              component={EditWorkouts}
-          
-              initialParams = {{users, user, userID}}
+    
           /> 
           <Stack.Screen 
               options= {{
@@ -152,10 +140,6 @@ function StackNavigation() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="ConfirmEmail" component={ConfirmEmail} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-      <Stack.Screen name="ResetPassword" component={ResetPassword} />
-      <Stack.Screen name="Survey" component={Survey} />
       <Stack.Screen
           name="TabNavigation"
           component={TabNavigation} />

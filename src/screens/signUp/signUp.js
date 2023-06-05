@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
 import { View, Text, useWindowDimensions, SafeAreaView, ScrollView } from 'react-native';
-import { Card } from 'react-native-elements';
 import { useNavigation} from '@react-navigation/core'
 import styles from '../../customStyleSheet'
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import CustomRadioButton from '../../components/CustomRadioButton';
 import { Divider } from '@rneui/themed';
+import { LinearGradient } from 'expo-linear-gradient';
+import RNPickerSelect from "react-native-picker-select";
+import { BlurView } from 'expo-blur';
+
+
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
+//  https://blog.logrocket.com/how-to-use-react-native-picker-select/
+ 
+
 const config = {
   backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
 }
@@ -41,7 +47,6 @@ const registerUser = async (username, password, age, body_type) => {
     throw new Error ('Registration failed.')
   }
 }
-
 
 
 const SignUp = () => {
@@ -142,26 +147,46 @@ const SignUp = () => {
     setErrors(prevState => ({...prevState, [input]: error}));
   };
 
-  const {height, width} = useWindowDimensions();
 
-  // for displaying radio buttons for survey at end of sign up screen:
-  const bodyTypeOptions = ['Ectomorph', 'Mesomorph', 'Endomorph'];
-  const [selectedBodyType, setSelectedBodyType] = useState(null);
 
-  const experienceLevelOptions = ['3', '4', '5'];
-  const [selectedExperienceLevel, setSelectedExperienceLevel] = useState(null);
-
-  const handleSelectBodyType = (index) => {
-    setSelectedBodyType(index);
+  // update body type
+  const [bodyType, setBodyType] = useState(null);
+  const handleBodyTypeChange = (value) => {
+    setFrequency(value);
   };
 
-  const handleSelectExperienceLevel = (index) => {
-    setSelectedExperienceLevel(index);
+
+  // update frequency
+  const [frequency, setFrequency] = useState(null);
+  const handleFrequencyChange = (value) => {
+    setFrequency(value);
   };
+
+  // update age
+  const [age, setAge] = useState('');
+
 
     return (
+
+      <LinearGradient style={styles.container}
+      colors={[
+        '#E4B9FF',
+        '#DA9EFF',
+        '#C86DFF',
+        '#B455FF',
+        '#A055FF',
+        '#9655FF',
+        '#7755FF',
+        '#7755FF',
+        '#6355FF',
+      ]}
+      start={{x: 0, y: 0}}
+      end={{x: .85, y: .75}}
+      locations={[.03, .09, .25, .38, .49, .59, .7, .8, .95]}
+    >
     <SafeAreaView style ={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
+
         <View style={styles.root}>
             <Text style={styles.title}>Create Account</Text>
 
@@ -210,37 +235,113 @@ const SignUp = () => {
             secureTextEntry={true}
             error={errors.repeatPassword}
             />      
-                    <Divider style={styles.divider} inset={true} insetType="center"/>
-
-          <Text style={styles.largerText}>Select your body type:</Text>
-
-          <CustomRadioButton
-            options={bodyTypeOptions}
-            selectedOption={selectedBodyType}
-            onSelect={handleSelectBodyType}
-          />
           <Divider style={styles.divider} inset={true} insetType="center"/>
 
-          <Text style={styles.largerText}>Select the number of days you would like to work out each week:</Text>
+          <Text style={styles.text}>Select your body type:</Text>
+          <View style={styles.blurContainer}>
+          <BlurView intensity={55} tint='light' style={styles.blurView}>
+            <View style={styles.picker}>
+            <RNPickerSelect
+            placeholder= {{
+                label: 'Body type...'
+              }}
+            onValueChange={handleBodyTypeChange}
+            items={[
+              { label: 'Mesomorph', value: 'Mesomorph' },
+              { label: 'Ectomorph', value: 'Ectomorph' },
+              { label: 'Endomorph', value: 'Endomorph' },
+          
+            ]}
+          
+            style={{  
+              placeholder: {
+                color: '#7755FF',
+                fontStyle: 'italic',
+                fontSize: 15,
+                textAlign: 'center',
+                marginTop: 8,
+                alignItems: 'center',
+              },
+              inputIOS: {
+                fontStyle: 'italic',
+                fontSize: 15,
+                textAlign: 'center',
+                marginTop: 8,
+                alignItems: 'center',
+              },
+       
+            }}
+        />
+        </View>
+            </BlurView>
+            
+        </View>
 
-          <CustomRadioButton
-            options={experienceLevelOptions}
-            selectedOption={selectedExperienceLevel}
-            onSelect={handleSelectExperienceLevel}
-          />
+          <Text style={styles.text}>Select the number of days you would like to work out each week:</Text>
+          <View style={styles.blurContainer}>
+          <BlurView intensity={55} tint='light' style={styles.blurView}>
+            <View style={styles.picker}>
+            <RNPickerSelect
+          
+            placeholder= {{
+              label: 'Days per week...'
+            }}
+            onValueChange={handleFrequencyChange}
+            items={[
+              { label: '3', value: '3' },
+              { label: '4', value: '4' },
+              { label: '5', value: '5' },
+            ]}
 
-    
+            style={{
+              
+              placeholder: {
+                color: '#7755FF',
+                fontStyle: 'italic',
+                fontSize: 15,
+                textAlign: 'center',
+                marginTop: 8,
+                alignItems: 'center',
+              },
+              inputIOS: {
+               
+                fontStyle: 'italic',
+                fontSize: 15,
+                textAlign: 'center',
+                marginTop: 8,
+                alignItems: 'center',
+              },
+       
+            }}
+        />
+        </View>
+            </BlurView>
+            
+        </View>
+     
+        <Text style={styles.text}>Enter your age:</Text>
+        <CustomInput
+            placeholder="Age..."
+            value={age}
+            setValue={setAge}
+            onChangeText={text => handleOnchange(text, 'age')}
+          
+            />
 
         </View>
-      </ScrollView>
 
-      <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
       <CustomButton 
-            text="Register" 
+            text="Create my account" 
             onPress={onRegisterPressed}
+
             />
       </View>
+      </ScrollView>
+
+    
     </SafeAreaView>  
+    </LinearGradient>
     )
 };
 

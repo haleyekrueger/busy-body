@@ -14,7 +14,9 @@ const config = {
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 //          https://www.youtube.com/watch?v=O5sI8oWVBR0
 
+
 const LoginScreen = () => {
+  const navigation = useNavigation();
   // request attributes username and password from Users entity on busy body 
   // dqtastore database
   const [username, setUsername] = useState('');
@@ -29,8 +31,7 @@ const LoginScreen = () => {
 
   //  navigation.navigate('Survey')
 //  }
-  
-  
+ 
   
 const onSignInPressed = async () => {
   try {
@@ -47,8 +48,14 @@ const onSignInPressed = async () => {
 
     if (user && user.password === passwordInput) {
       const userID = user.id;
+
+      console.log(userID)
       // passing userID to identify the correct user on the rest of the screens
-      navigation.navigate('Survey', {userID});
+ 
+      navigation.navigate('TabNavigation', {
+        screen: 'WorkoutNavigation',
+        userID: userID,})
+      
     } else {
       alert('Invalid username or password');
     }
@@ -75,7 +82,7 @@ const onSignInPressed = async () => {
   }
 
   const {height} = useWindowDimensions();
-  const navigation = useNavigation();
+
 
     return (
 
@@ -114,13 +121,13 @@ const onSignInPressed = async () => {
            
               text="Sign In" 
               onPress={onSignInPressed} />
-
-            <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
+            <View style={styles.root}>
             <CustomButton 
               text="New User? Create an account" 
               onPress={onSignUpPressed}
               type="TERTIARY"
             />
+            </View>
 
         </View>
         

@@ -5,11 +5,12 @@ import { BlurView } from 'expo-blur';
 // resources: https://stackoverflow.com/questions/40628114/react-native-cannot-write-first-letter-with-noncapital
 //            https://docs.expo.dev/versions/latest/sdk/blur-view/
 //            https://mui.com/joy-ui/react-textarea/
+
 const customInput = ({value, setValue, placeholder, error, secureTextEntry}) => {
 
     return (
         <View style={styles.blurContainer}>
-          <BlurView intensity={55} tint='light' style={styles.blurView}>
+          <BlurView intensity={40} tint='light' style={styles.blurView}>
             <View style={styles.inputContainer}>
             <TextInput
               value={value}
