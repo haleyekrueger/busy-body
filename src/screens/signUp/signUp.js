@@ -18,9 +18,13 @@ import { BlurView } from 'expo-blur';
 const config = {
   backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
 }
-const body_type = "mesomorph";
-const age = 26; 
-const registerUser = async (username, password, age, body_type) => {
+
+const registerUser = async (username, password, age, frequency, body_type) => {
+  console.log(username)
+  console.log(password)
+  console.log(body_type)
+  console.log(frequency)
+  console.log(age)
   try {
     const response = await fetch(`${config.backendUrl}/users`, {
       method: 'POST',
@@ -31,6 +35,7 @@ const registerUser = async (username, password, age, body_type) => {
         username,
         password,
         age,
+        frequency,
         body_type
       }),
     });
@@ -44,8 +49,11 @@ const registerUser = async (username, password, age, body_type) => {
       throw new Error(errorData.message)
     }
   } catch (error) {
+    console.error(error)
     throw new Error ('Registration failed.')
+   
   }
+
 }
 
 
@@ -53,82 +61,39 @@ const SignUp = () => {
 
   const navigation = useNavigation();
 
+  // Update username
   const [username, setUsername] = useState('');
+
+
+  // Update password
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
 
-  const [errors, setErrors] = React.useState({});
-  const [loading, setLoading] = React.useState(false);
 
-  const validate = () => {
-
-    handleError(null, 'email');
-    handleError(null, 'password');
-    handleError(null, 'repeatPassword');
-    //Keyboard.dismiss();
-    let isValid = true;
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-
-    if (!email) {
-      handleError('Please input an email', 'email');
-      isValid = false;
-    } else if (reg.test(email) === false) {
-
-      handleError('Please input a valid email', 'email');
-      isValid = false;
-    }
-
-    if (!password) {
-      handleError('Please input password', 'password');
-      isValid = false;
-    } else if (password.length < 5) {
-      handleError('Password must be greater than 5 characters', 'password');
-      isValid = false;
-    }
-
-    const isNonWhiteSpace = /^\S*$/;
-    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
-    const isContainsNumber = /^(?=.*[0-9]).*$/;
-
-    if (!isNonWhiteSpace.test(password)) {
-      handleError('Password must not contain whitespace', 'password');
-      isValid = false;
-    }
-
-    if (!isContainsUppercase.test(password)) {
-      handleError('Password must have at least 1 uppercase letter', 'password');
-      isValid = false;
-    }
-
-    if (!isContainsNumber.test(password)) {
-      handleError('Password must contain at least 1 number', 'password');
-      isValid = false;
-    }
-
-    if (password != repeatPassword) {
-      console.log("not the same passwords")
-      handleError('Passwords do not match', 'repeatPassword');
-      isValid = false;      
-    }
-
-    if (isValid) {
-      //register();
-      console.log("valid");
-    }
+  // Update body type
+  const [body_type, setBodyType] = useState(null);
+  const handleBodyTypeChange = (value) => {
+    setBodyType(value);
   };
 
+  // Update frequency
+  const [frequency, setFrequency] = useState(null);
+  const handleFrequencyChange = (value) => {
+    setFrequency(value);
+  };
 
+  // update age
+  const [age, setAge] = useState('');
+
+  // When register is pressed, call registerUser to create a user
   const onRegisterPressed = async() => {
     try{
-      await validate();
-      const response = await registerUser(username, password, age, body_type);
+      const response = await registerUser(username, password, age, frequency, body_type);
       console.log(response.userID, 2);
       if (response.success) {
         console.log(response.userID,3)
-      navigation.navigate('ConfirmEmail',
-        { userID : response.userID },
-      );
+        navigation.navigate('TabNavigation', {
+          screen: 'WorkoutNavigation',
+          userID: response.userID,})  
     }
     } catch (error) {
       console.error(error)
@@ -140,32 +105,7 @@ const SignUp = () => {
     navigation.navigate('Login')
   };
 
-  const handleOnchange = (text, input) => {
-    setInputs(prevState => ({...prevState, [input]: text}));
-  };
-  const handleError = (error, input) => {
-    setErrors(prevState => ({...prevState, [input]: error}));
-  };
-
-
-
-  // update body type
-  const [bodyType, setBodyType] = useState(null);
-  const handleBodyTypeChange = (value) => {
-    setFrequency(value);
-  };
-
-
-  // update frequency
-  const [frequency, setFrequency] = useState(null);
-  const handleFrequencyChange = (value) => {
-    setFrequency(value);
-  };
-
-  // update age
-  const [age, setAge] = useState('');
-
-
+  // Screen display
     return (
 
       <LinearGradient style={styles.container}
@@ -202,39 +142,16 @@ const SignUp = () => {
             value={username}
             onChangeText={setUsername}
             setValue={setUsername}
-            secureTextEntry={false}
-            />
-
-            <CustomInput
-            placeholder="Email"
-            
-            value={email}
-            onChangeText={text => handleOnchange(text, 'email')}
-            onFocus={() => handleError(null, 'email')}
-            setValue={setEmail}
-            secureTextEntry={false}
-            error={errors.email}
+       
             />
 
             <CustomInput
             placeholder="Password"
-            value={password}
-            onChangeText={text => handleOnchange(text, 'password')}
-            onFocus={() => handleError(null, 'password')}
+            onChangeText={setPassword}
             setValue={setPassword}
-            secureTextEntry={true}
-            error={errors.password}
             />
 
-            <CustomInput
-            placeholder="Re-enter Password"
-            value={repeatPassword}
-            onChangeText={text => handleOnchange(text, 'repeatPassword')}
-            onFocus={() => handleError(null, 'repeatPassword')}
-            setValue={setRepeatPassword}
-            secureTextEntry={true}
-            error={errors.repeatPassword}
-            />      
+              
           <Divider style={styles.divider} inset={true} insetType="center"/>
 
           <Text style={styles.text}>Select your body type:</Text>
@@ -324,13 +241,11 @@ const SignUp = () => {
             placeholder="Age..."
             value={age}
             setValue={setAge}
-            onChangeText={text => handleOnchange(text, 'age')}
-          
             />
 
         </View>
 
-        <View style={styles.buttonContainer}>
+        <View>
       <CustomButton 
             text="Create my account" 
             onPress={onRegisterPressed}

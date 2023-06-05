@@ -66,15 +66,6 @@ const onSignInPressed = async () => {
 };
   
   
-  
-  const onForgotPasswordPressed = () => {
-    navigation.navigate('ForgotPassword')
-    // we will need to add an email attribute to the user object
-// so that we can do the same method with get all users...thr user will enter their
-// username and email and we will parse the reponse to find the associated email matches 
-// the username given/if it even exists, then we will send a link to the email to a screen that
-// hits a PATCH endpoint and allows the user to update their password
-  }
 
   const onSignUpPressed = () => {
     navigation.navigate('SignUp')
@@ -114,7 +105,10 @@ const onSignInPressed = async () => {
               
          
             <CustomInput 
-            placeholder="Password" value={password} setValue={setPassword}/>
+              placeholder="Password" 
+              value={password} 
+              setValue={setPassword}
+              secureTextEntry={true}/>
                         
 
             <CustomButton 

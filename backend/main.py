@@ -298,7 +298,7 @@ def users_post():
                 invalid = True
                 error_msg["Age Error"] = "age must be between 14 and 115 years"
         
-        body_types = ["ectomorph", "endomorph", "mesomorph"]
+        body_types = ["Ectomorph", "Endomorph", "Mesomorph"]
         if check_body_type not in body_types:
             invalid = True
             error_msg["Body Type Error"] = "Error: Body type attribute is not ectomorph, endomorph, or mesomorph"
