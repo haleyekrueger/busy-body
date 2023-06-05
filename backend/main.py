@@ -173,6 +173,30 @@ def user_post_comp_lower_body_exercises(user_id):
 
     return json.dumps(comp_lower_body_exercises), 200
 
+@app.route('/users/<user_id>/upper-body-count', methods=['GET'])
+def user_get_upper_body_count(user_id):
+    query = client.query(kind='User')
+    query.add_filter('user_id', '=', int(user_id))
+    user = list(query.fetch())
+
+    if user:
+        upper_body_count = user[0]['upper_body_count']
+        return json.dumps({'upper_body_count': upper_body_count}), 200
+    else:
+        return 'User not found', 404
+
+@app.route('/users/<user_id>/lower-body-count', methods=['GET'])
+def user_get_upper_body_count(user_id):
+    query = client.query(kind='User')
+    query.add_filter('user_id', '=', int(user_id))
+    user = list(query.fetch())
+
+    if user:
+        lower_body_count = user[0]['lower_body_count']
+        return json.dumps({'lower_body_count': lower_body_count}), 200
+    else:
+        return 'User not found', 404
+
 # GET CORE DATA 
 @app.route('/users/<user_id>/core-exercises', methods=['GET'])
 def user_get_core_exercises(user_id):
