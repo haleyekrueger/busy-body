@@ -10,7 +10,6 @@ import {StyleSheet} from 'react-native';
 //imports for workouts
 import ExerciseDetails from '../screens/exerciseDetails';
 import ExerciseInstructions from '../screens/exerciseInstructions'
-import EditExercises from '../screens/editExercises';
 
 // imports for tab
 import Home from '../screens/home';
@@ -68,14 +67,7 @@ function WorkoutNavigation () {
               component={ExerciseInstructions}
               initialParams = {{exercise}} 
           />   
-         <Stack.Screen 
-              options= {{
-              headerTintColor: 'black'
-              }}
-              name="EditExercises"
-              component={EditExercises}
-              initialParams = {{exercise}} 
-          />   
+  
       </Stack.Navigator>
   )
 }
