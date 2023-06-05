@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import styles from '../../customStyleSheet'
 import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 
 
 const config = {
@@ -12,7 +13,7 @@ const config = {
 };
 
 const exercises_example = [
-  { name: 'Bicep Curl', sets: 3, reps: 12, instructions: 'bicep curl instructions...' },
+  { name: 'Bicep Curl', sets: 3, reps: 12, instructions: 'bicep curl instructions..'},
   { name: 'Squat', sets: 3, reps: 12, instructions: 'squat instructions..' },
   { name: 'Pull Up', sets: 3, reps: 12, instructions: 'pull up instructions...' },
   { name: 'Deadlift', sets: 3, reps: 12, instructions: 'deadlift instructions...' },
@@ -99,12 +100,15 @@ const WorkoutScreen = () => {
    
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.root}>
-        <Text style={styles.largerText}> You have {frequency} workouts this week. Click 
+        <Text style={styles.title}>Workouts</Text>
+        <Text style={styles.largerTextLeft2}>You have {frequency} workouts this week. Click 
         a day below to view the workout for that day.
         </Text>
         
         {weeklyExercises.map((exercise_list, index) => (
-          <View key={index} style={styles.subRoot}>
+        <View style={styles.blurContainer3}>
+        <BlurView intensity={30} tint='light' style={styles.blurView3}>
+          <View key={index} >
           <CustomButton
             text= {`Day ${index + 1}`} 
             key={index}
@@ -112,12 +116,14 @@ const WorkoutScreen = () => {
             type="PRIMARY"
           />
           </View>
-        
+        </BlurView>
+        </View>
         ))}
         </View>
       </ScrollView>
-
+  
     </LinearGradient>
+
   );
 };
 
