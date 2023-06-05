@@ -21,11 +21,23 @@ def index():
     - body_type must be either "endomorph", "ectomorph", or "mesomorph"
  """
 
-@app.route('/users/<user_id>/exercises', methods=['GET'])
-def user_get_exercises(user_id):
+@app.route('/users/<user_id>/upper-body-exercises', methods=['GET'])
+def user_get_upper_body_exercises(user_id):
 
+    # user will have 'exercises' blob that holds 6 attributes:
+    #   - upper_body_exercises
+    #   - upper_body_count
+    #   - lower_body_exercises
+    #   - lower_body_count
+    #   - core_exercises
+    #   - core_count
+    #
+    #   when the count exceeds 12, the User attribute '[upper_body]_level' bumps up to 'intermediate' or 'advanced' dependent on its current value
+
+
+    # GET UPPER BODY DATA BLOB
     # Check if exercises already exist for the user
-    query = client.query(kind='Exercises')
+    query = client.query(kind='upperBodyExercises')
     query.add_filter('user_id', '=', int(user_id))
     existing_exercises = list(query.fetch())
 
@@ -36,30 +48,172 @@ def user_get_exercises(user_id):
         response = requests.get(api_url, headers={'X-Api-Key': 'SLeqOqXDE2bVt7AE7mDup7OQYuk1Wnf415xFIEnA'})
 
         if response.status_code == requests.codes.ok:
-            exercise_key = client.key('Exercises')
-            exercise_data = response.json()
+            upper_body_exercise_key = client.key('Exercises')
+            upper_body_exercise_data = response.json()
 
-            for exercise_item in exercise_data:
-                exercise = datastore.Entity(key=exercise_key)
+            for exercise_item in upper_body_exercise_data:
+                upper_body_exercise = datastore.Entity(key=upper_body_exercise_key)
 
                 user = int(user_id)
                 name = exercise_item.get('name')
                 equipment = exercise_item.get('equipment')
                 instructions = exercise_item.get('instructions')
 
-                exercise['user_id'] = user
-                exercise['name'] = name
-                exercise['equipment'] = equipment
-                exercise['instructions'] = instructions
+                upper_body_exercise['user_id'] = user
+                upper_body_exercise['name'] = name
+                upper_body_exercise['equipment'] = equipment
+                upper_body_exercise['instructions'] = instructions
+                upper_body_exercise['reps'] = 12
+                upper_body_exercise['sets'] = 3
 
-                client.put(exercise)
+                client.put(upper_body_exercise)
 
     # Fetch the stored exercises
-    query = client.query(kind='Exercises')
+    query = client.query(kind='upperBodyExercises')
     query.add_filter('user_id', '=', int(user_id))
-    exercises = list(query.fetch())
+    upper_body_exercises = list(query.fetch())
 
-    return json.dumps(exercises), 200
+    return json.dumps(upper_body_exercise), 200
+
+
+# update num completed upper body exercises
+@app.route('/users/<user_id>/comp-upper-body-exercises', methods=['POST'])
+def user_post_comp_upper_body_exercises(user_id):
+    query = client.query(kind='completedUpperBodyExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    comp_upper_body_exercises = list(query.fetch())
+
+    if not comp_upper_body_exercises:
+    
+        comp_upper_body_exercise_key = client.key('completedUpperBodyExercises')
+        comp_upper_body_exercises = datastore.Entity(key=comp_upper_body_exercise_key)
+        comp_upper_body_exercises['completed'] = 1
+        client.put(comp_upper_body_exercises)
+
+    else:
+        comp_upper_body_exercise_key = client.key('completedUpperBodyExercises', int(user_id))
+        updated_comp = client.get(key=comp_upper_body_exercise_key)
+        updated_comp['completed'] = int(comp_upper_body_exercises[0]) + 1
+        client.put(comp_upper_body_exercises)
+
+    return json.dumps(comp_upper_body_exercises), 200
+
+# get num completed upper body exercises
+@app.route('/users/<user_id>/comp-upper-body-exercises', methods=['GET'])
+def user_get_comp_upper_body_exercises(user_id): 
+    query = client.query(kind='completedUpperBodyExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    comp_upper_body_exercises = list(query.fetch())
+
+    return json.dumps(comp_upper_body_exercises), 200
+    
+
+# get lower body exercises
+@app.route('/users/<user_id>/lower-body-exercises', methods=['GET'])
+def user_get_lower_body_exercises(user_id):
+    # GET LOWER BODY DATA BLOB
+    # Check if exercises already exist for the user
+    query = client.query(kind='lowerBodyExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    existing_exercises = list(query.fetch())
+
+    if not existing_exercises:
+        # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
+        muscle = 'biceps'
+        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+        response = requests.get(api_url, headers={'X-Api-Key': 'SLeqOqXDE2bVt7AE7mDup7OQYuk1Wnf415xFIEnA'})
+
+        if response.status_code == requests.codes.ok:
+            lower_body_exercise_key = client.key('Exercises')
+            lower_body_exercise_data = response.json()
+
+            for exercise_item in lower_body_exercise_data:
+                lower_body_exercise = datastore.Entity(key=lower_body_exercise_key)
+
+                user = int(user_id)
+                name = exercise_item.get('name')
+                equipment = exercise_item.get('equipment')
+                instructions = exercise_item.get('instructions')
+
+                lower_body_exercise['user_id'] = user
+                lower_body_exercise['name'] = name
+                lower_body_exercise['equipment'] = equipment
+                lower_body_exercise['instructions'] = instructions
+                lower_body_exercise['reps'] = 12
+                lower_body_exercise['sets'] = 3
+
+                client.put(lower_body_exercise)
+
+    # Fetch the stored exercises
+    query = client.query(kind='lowerBodyExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    lower_body_exercise = list(query.fetch())
+
+    return json.dumps(lower_body_exercise), 200
+
+# update num completed lower body exercises
+@app.route('/users/<user_id>/comp-lower-body-exercises', methods=['POST'])
+def user_post_comp_lower_body_exercises(user_id):
+    query = client.query(kind='completedLowerBodyExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    comp_lower_body_exercises = list(query.fetch())
+
+    if not comp_lower_body_exercises:
+    
+        comp_lower_body_exercise_key = client.key('completedLowerBodyExercises')
+        comp_lower_body_exercises = datastore.Entity(key=comp_lower_body_exercise_key)
+        comp_lower_body_exercises['completed'] = 1
+        client.put(comp_lower_body_exercises)
+
+    else:
+        comp_lower_body_exercise_key = client.key('completedLowerBodyExercises', int(user_id))
+        updated_comp = client.get(key=comp_lower_body_exercise_key)
+        updated_comp['completed'] = int(comp_lower_body_exercises[0]) + 1
+        client.put(comp_lower_body_exercises)
+
+    return json.dumps(comp_lower_body_exercises), 200
+
+# GET CORE DATA 
+@app.route('/users/<user_id>/core-exercises', methods=['GET'])
+def user_get_core_exercises(user_id):
+    # Check if exercises already exist for the user
+    query = client.query(kind='coreExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    existing_exercises = list(query.fetch())
+
+    if not existing_exercises:
+        # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
+        muscle = 'biceps'
+        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+        response = requests.get(api_url, headers={'X-Api-Key': 'SLeqOqXDE2bVt7AE7mDup7OQYuk1Wnf415xFIEnA'})
+
+        if response.status_code == requests.codes.ok:
+            core_exercise_key = client.key('Exercises')
+            core_exercise_data = response.json()
+
+            for exercise_item in core_exercise_data:
+                core_exercise = datastore.Entity(key=core_exercise_key)
+
+                user = int(user_id)
+                name = exercise_item.get('name')
+                equipment = exercise_item.get('equipment')
+                instructions = exercise_item.get('instructions')
+
+                core_exercise['user_id'] = user
+                core_exercise['name'] = name
+                core_exercise['equipment'] = equipment
+                core_exercise['instructions'] = instructions
+                core_exercise['reps'] = 12
+                core_exercise['sets'] = 3
+
+                client.put(core_exercise)
+
+    # Fetch the stored exercises
+    query = client.query(kind='coreExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    core_exercise = list(query.fetch())
+
+    return json.dumps(core_exercise), 200
 
 
 @app.route('/users', methods=['POST'])
@@ -82,9 +236,10 @@ def users_post():
     check_password = content.get('password')
     check_age = content.get('age')
     check_body_type = content.get('body_type')
-
+    check_frequency = content.get('frequency')
+   
     # check for inclusion of extraneous attributes
-    if len(content) > 4:
+    if len(content) > 5:
         invalid = True
         error_msg["Error"] = "The request object contains extraneous attributes"
 
@@ -129,11 +284,14 @@ def users_post():
             return (json.dumps(error_msg), 400, headers)
 
         new_user = datastore.entity.Entity(key=client.key(constants.users))
-        new_user.update({"username": content["username"], "password": content["password"], "age": content["age"], "body_type": content["body_type"]})
+        new_user.update({"username": content["username"], "password": content["password"], "age": content["age"], 
+        "body_type": content["body_type"], "frequency": content["frequency"]})
         client.put(new_user)
         user_id = new_user.key.id
 
-        response_data = {"id": user_id, "username": new_user.get("username"), "password": new_user.get("password"), "age": new_user.get("age"), "body_type": new_user.get("body_type"), "self": url_for('users_get', user_id=user_id, _external=True)}
+        response_data = {"id": user_id, "username": new_user.get("username"), "password": new_user.get("password"), 
+        "age": new_user.get("age"), "body_type": new_user.get("body_type"), "frequency": new_user.get("frequency"), "self": url_for('users_get', 
+        user_id=user_id, _external=True)}
         return (json.dumps(response_data), 201, {"Content-Type": "application/json"})
 
 #GET A user
@@ -145,9 +303,10 @@ def users_get(user_id):
 
     if users == None:
         return (json.dumps({"Error": "No user with this user_id exists"}), 404)
-    else: # check header for accepted type, if json send json if html send json2html FIX
-        response_data = {"id": user_id, "username": users.get("username"), "password": users.get("password"), "age": users.get("age"), "body_type": users.get("body_type"), "self": url_for('users_get', user_id=user_id, _external=True)}
-        #res = make_response(json2html.convert(json = json.dumps(response_data)))
+    else:
+        response_data = {"id": user_id, "username": users.get("username"), "password": users.get("password"), "age": users.get("age"), 
+        "body_type": users.get("body_type"), "self": url_for('users_get', user_id=user_id, _external=True)}
+      
         res = make_response(json.dumps(response_data))
         res.headers.set('Content-Type', 'application/json')
         return res
@@ -156,7 +315,7 @@ def users_get(user_id):
 
 @app.route('/users', methods=['GET'])
 def users_get_all():
-    users_key = client.key(constants.users) # prob don't need 
+    users_key = client.key(constants.users) 
     query = client.query(kind='users')
     users = list(query.fetch())
 
@@ -166,7 +325,7 @@ def users_get_all():
         response_data = []
         for user in users:
             user_id = user.key.id
-            user_data = {"id": user_id, "username": user.get("username"), "password": user.get("password"), "age": user.get("age"), "body_type": user.get("body_type"), "self": url_for('users_get', user_id=user_id, _external=True)}
+            user_data = {"id": user_id, "username": user.get("username"), "password": user.get("password"), "age": user.get("age"), "body_type": user.get("body_type"), "frequency": user.get("frequency"), "self": url_for('users_get', user_id=user_id, _external=True)}
             response_data.append(user_data)
         #res = make_response(json2html.convert(json = json.dumps(response_data)))
         res = make_response(json.dumps(response_data))
@@ -355,5 +514,5 @@ def users_delete(user_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    #app.run(host ='127.0.0.1', port = 5000, debug=True)
+    #app.run(debug=True)
+    app.run(host ='127.0.0.1', port = 5000, debug=True)
