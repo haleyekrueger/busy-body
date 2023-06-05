@@ -15,6 +15,7 @@ import ExerciseInstructions from '../screens/exerciseInstructions'
 import Home from '../screens/home';
 import Workouts from '../screens/workouts';
 import Profile from '../screens/profile';
+import Stats from '../screens/stats';
 
 // imports for stack
 import Login from '../screens/login';
@@ -127,6 +128,19 @@ function TabNavigation () {
           headerBlurEffect: 'true',
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={30} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Stats"
+        component={Stats}
+        initialParams={{ users, user, userID }}
+        options={{
+          headerTintColor: 'transparent',
+          headerTransparent: 'true',
+          headerBlurEffect: 'true',
+          tabBarIcon: ({ color }) => (
+          <Ionicons name="stats-chart" size={30} color={color} />
           ),
         }}
       />
