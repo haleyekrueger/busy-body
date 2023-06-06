@@ -14,50 +14,46 @@ import { BlurView } from 'expo-blur';
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 //  https://blog.logrocket.com/how-to-use-react-native-picker-select/
 //
- 
+
 
 const config = {
-  backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
+  backendUrl: 'https://busy-body-final.uw.r.appspot.com',
 }
 
+
 const registerUser = async (username, password, age, frequency, body_type) => {
-  console.log(username)
-  console.log(password)
-  console.log(body_type)
-  console.log(frequency)
-  console.log(age)
+  console.log(username, password, age, frequency, body_type )
   try {
     const response = await fetch(`${config.backendUrl}/users`, {
       method: 'POST',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
         username,
         password,
-        age,
+        age: parseInt(age),
+        body_type,
         frequency,
-        body_type
       }),
     });
     if (response.ok) {
       const responseData = await response.json()
-      console.log(responseData.id, 1)
       const userID = responseData.id
+      console.log(responseData)
       return { success: true, userID}
     } else {
       const errorData = await response.json()
-      throw new Error(errorData.message)
+      console.error(errorData.Error)
+      // throw new Error()
     }
   } catch (error) {
     console.error(error)
     throw new Error ('Registration failed.')
-   
+  
   }
 
 }
-
-
 const SignUp = () => {
 
   const navigation = useNavigation();
@@ -105,6 +101,13 @@ const SignUp = () => {
   const onSignInPress = () => {
     navigation.navigate('Login')
   };
+
+
+
+
+
+
+  
 
   // Screen display
     return (
@@ -165,9 +168,9 @@ const SignUp = () => {
               }}
             onValueChange={handleBodyTypeChange}
             items={[
-              { label: 'Mesomorph', value: 'Mesomorph' },
-              { label: 'Ectomorph', value: 'Ectomorph' },
-              { label: 'Endomorph', value: 'Endomorph' },
+              { label: 'Mesomorph', value: 'mesomorph' },
+              { label: 'Ectomorph', value: 'ectomorph' },
+              { label: 'Endomorph', value: 'endomorph' },
           
             ]}
           

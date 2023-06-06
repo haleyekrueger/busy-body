@@ -75,7 +75,7 @@ const Stats = () => {
           
             <Text style={styles.largerTextLeft}>Upper Body Count: 1</Text>
             <Text style={styles.largerTextLeft}>Lower Body Count: 1</Text>
-            <Text style={styles.largerTextLeft}>Core Count: 1</Text>
+            <Text style={styles.largerTextLeft}>Core Count: 0</Text>
           
           </BlurView>
           </View>
