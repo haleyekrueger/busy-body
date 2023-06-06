@@ -160,7 +160,7 @@ const ExerciseDetails = () => {
         {exercise_list.map((exercise, index) => (
           
 
-          <View style={styles.blurContainer}>
+          <View key={exercise.name} style={styles.blurContainer}>
           <BlurView intensity={30} tint='light' style={styles.blurView2}>
 
 
