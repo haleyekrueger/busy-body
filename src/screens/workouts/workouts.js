@@ -92,7 +92,7 @@ const WorkoutScreen = () => {
         </Text>
         
         {weeklyExercises.map((exercise_list, index) => (
-        <View style={styles.blurContainer3}>
+        <View key={`day-${index}`} style={styles.blurContainer3}>
         <BlurView intensity={30} tint='light' style={styles.blurView3}>
           <View key={index} >
           <CustomButton
