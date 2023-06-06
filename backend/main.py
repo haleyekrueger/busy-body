@@ -4,6 +4,7 @@ import json
 import constants
 import requests
 from datetime import datetime, timedelta
+import random
 
 
 app = Flask(__name__)
@@ -37,14 +38,29 @@ def user_get_upper_body_exercises(user_id):
 
     # GET UPPER BODY DATA BLOB
     # Check if exercises already exist for the user
+
+    # this chunk gets the data that exists already in the database
     query = client.query(kind='upperBodyExercises')
     query.add_filter('user_id', '=', int(user_id))
     existing_exercises = list(query.fetch())
-
+###########################
     if not existing_exercises:
         # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
-        muscle = 'biceps'
-        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+        # add in logic for choosing a random upper body muscle group
+
+        
+
+        muscle = ['biceps', 'chest', 'forearms', 'lats', 'upper_back', 'middle_back', 'neck', 'traps', 'triceps']
+        rand_num = random.randint(0, 8)
+        chosen_muscle = muscle[rand_num]
+
+        # once 12 beginner levels have been completed, bump up to intermediate level, etc MOVE LOGIC TO COMP
+        query = client.query(kind='Users')
+        query.add_filter('user_id', '=', int(user_id))
+        user = list(query.fetch())
+
+        level = user["level"]
+        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}&strength&difficulty={}'.format(chosen_muscle, level)  # &strength might cause bug
         response = requests.get(api_url, headers={'X-Api-Key': 'SLeqOqXDE2bVt7AE7mDup7OQYuk1Wnf415xFIEnA'})
 
         if response.status_code == requests.codes.ok:
@@ -73,7 +89,7 @@ def user_get_upper_body_exercises(user_id):
     query.add_filter('user_id', '=', int(user_id))
     upper_body_exercises = list(query.fetch())
 
-    return json.dumps(upper_body_exercise), 200
+    return json.dumps(upper_body_exercises), 200
 
 
 # update num completed upper body exercises
@@ -95,6 +111,31 @@ def user_post_comp_upper_body_exercises(user_id):
         updated_comp = client.get(key=comp_upper_body_exercise_key)
         updated_comp['completed'] = int(comp_upper_body_exercises[0]) + 1
         client.put(comp_upper_body_exercises)
+        if updated_comp['completed'] == 12:
+            query = client.query(kind='Users')
+            query.add_filter('user_id', '=', int(user_id))
+            user = list(query.fetch())
+
+            if user["level"] == "beginner":
+                new_level = "intermediate"
+            elif user["level"] == "intermediate":
+                new_level = "advanced"
+            else:
+                new_level = "advanced"
+            
+            updated_user = {}
+            users_key = client.key("Users", int(user_id))
+            updated_user = client.get(key=users_key)
+            
+            new_username = updated_user.get("username")
+            new_password = updated_user.get("password")
+            new_age = updated_user.get("age")
+            new_body_type = updated_user.get("body_type")
+            new_frequency = updated_user.get("frequency")
+            
+            updated_user.update({"username": new_username, "password": new_password, "age": new_age, "body_type": new_body_type, "frequency": new_frequency, "level": new_level})
+            client.put(updated_user)
+            user_id = updated_user.key.id
 
     return json.dumps(comp_upper_body_exercises), 200
 
@@ -119,8 +160,18 @@ def user_get_lower_body_exercises(user_id):
 
     if not existing_exercises:
         # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
-        muscle = 'biceps'
-        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+        # add logic for choosing a random lower body exercise
+        muscle = ['quadriceps', 'abductors', 'adductors', 'calves', 'glutes', 'hamstrings']
+        rand_num = random.randint(0, 5)
+        chosen_muscle = muscle[rand_num]
+
+        # once 12 beginner levels have been completed, bump up to intermediate level, etc MOVE LOGIC TO COMP
+        query = client.query(kind='Users')
+        query.add_filter('user_id', '=', int(user_id))
+        user = list(query.fetch())
+
+        level = user["level"]
+        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}&strength&difficulty={}'.format(chosen_muscle, level)  # &strength might cause bug
         response = requests.get(api_url, headers={'X-Api-Key': 'SLeqOqXDE2bVt7AE7mDup7OQYuk1Wnf415xFIEnA'})
 
         if response.status_code == requests.codes.ok:
@@ -173,29 +224,14 @@ def user_post_comp_lower_body_exercises(user_id):
 
     return json.dumps(comp_lower_body_exercises), 200
 
-@app.route('/users/<user_id>/upper-body-count', methods=['GET'])
-def user_get_upper_body_count(user_id):
-    query = client.query(kind='User')
+# get num completed lower body exercises
+@app.route('/users/<user_id>/comp-lower-body-exercises', methods=['GET'])
+def user_get_comp_lower_body_exercises(user_id): 
+    query = client.query(kind='completedLowerBodyExercises')
     query.add_filter('user_id', '=', int(user_id))
-    user = list(query.fetch())
+    comp_lower_body_exercises = list(query.fetch())
 
-    if user:
-        upper_body_count = user[0]['upper_body_count']
-        return json.dumps({'upper_body_count': upper_body_count}), 200
-    else:
-        return 'User not found', 404
-
-@app.route('/users/<user_id>/lower-body-count', methods=['GET'])
-def user_get_upper_body_count(user_id):
-    query = client.query(kind='User')
-    query.add_filter('user_id', '=', int(user_id))
-    user = list(query.fetch())
-
-    if user:
-        lower_body_count = user[0]['lower_body_count']
-        return json.dumps({'lower_body_count': lower_body_count}), 200
-    else:
-        return 'User not found', 404
+    return json.dumps(comp_lower_body_exercises), 200
 
 # GET CORE DATA 
 @app.route('/users/<user_id>/core-exercises', methods=['GET'])
@@ -207,8 +243,17 @@ def user_get_core_exercises(user_id):
 
     if not existing_exercises:
         # ADD LOGIC TO DETERMINE MUSCLE GROUP AND DIFFICULTY
-        muscle = 'biceps'
-        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}'.format(muscle)
+        muscle = ['abdominals', 'lower_back']
+        rand_num = random.randint(0, 1)
+        chosen_muscle = muscle[rand_num]
+
+        # once 12 beginner levels have been completed, bump up to intermediate level, etc MOVE LOGIC TO COMP
+        query = client.query(kind='Users')
+        query.add_filter('user_id', '=', int(user_id))
+        user = list(query.fetch())
+
+        level = user["level"]
+        api_url = 'https://api.api-ninjas.com/v1/exercises?muscle={}&strength&difficulty={}'.format(chosen_muscle, level)  # &strength might cause bug
         response = requests.get(api_url, headers={'X-Api-Key': 'SLeqOqXDE2bVt7AE7mDup7OQYuk1Wnf415xFIEnA'})
 
         if response.status_code == requests.codes.ok:
@@ -239,6 +284,40 @@ def user_get_core_exercises(user_id):
 
     return json.dumps(core_exercise), 200
 
+# update num completed core body exercises
+@app.route('/users/<user_id>/comp-core-exercises', methods=['POST'])
+def user_post_comp_core_exercises(user_id):
+    query = client.query(kind='completedLowerBodyExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    comp_core_exercises = list(query.fetch())
+
+    if not comp_core_exercises:
+    
+        comp_core_exercise_key = client.key('completedCoreExercises')
+        comp_core_exercises = datastore.Entity(key=comp_core_exercise_key)
+        comp_core_exercises['completed'] = 1
+        client.put(comp_core_exercises)
+
+    else:
+        comp_core_exercise_key = client.key('completedCoreExercises', int(user_id))
+        updated_comp = client.get(key=comp_core_exercise_key)
+        updated_comp['completed'] = int(comp_core_exercises[0]) + 1
+        client.put(comp_core_exercises)
+
+    return json.dumps(comp_core_exercises), 200
+
+# get num completed core exercises
+@app.route('/users/<user_id>/comp-core-exercises', methods=['GET'])
+def user_get_comp_core_exercises(user_id): 
+    query = client.query(kind='completedCoreExercises')
+    query.add_filter('user_id', '=', int(user_id))
+    comp_core_exercises = list(query.fetch())
+
+    return json.dumps(comp_core_exercises), 200
+
+
+
+######################### USERS ######################################################################
 
 @app.route('/users', methods=['POST'])
 def users_post():
@@ -261,6 +340,7 @@ def users_post():
     check_age = content.get('age')
     check_body_type = content.get('body_type')
     check_frequency = content.get('frequency')
+
    
     # check for inclusion of extraneous attributes
     if len(content) > 5:
@@ -298,7 +378,7 @@ def users_post():
                 invalid = True
                 error_msg["Age Error"] = "age must be between 14 and 115 years"
         
-        body_types = ["Ectomorph", "Endomorph", "Mesomorph"]
+        body_types = ["ectomorph", "endomorph", "mesomorph"]
         if check_body_type not in body_types:
             invalid = True
             error_msg["Body Type Error"] = "Error: Body type attribute is not ectomorph, endomorph, or mesomorph"
@@ -309,12 +389,12 @@ def users_post():
 
         new_user = datastore.entity.Entity(key=client.key(constants.users))
         new_user.update({"username": content["username"], "password": content["password"], "age": content["age"], 
-        "body_type": content["body_type"], "frequency": content["frequency"]})
+        "body_type": content["body_type"], "frequency": content["frequency"], "level": "beginner"})
         client.put(new_user)
         user_id = new_user.key.id
 
         response_data = {"id": user_id, "username": new_user.get("username"), "password": new_user.get("password"), 
-        "age": new_user.get("age"), "body_type": new_user.get("body_type"), "frequency": new_user.get("frequency"), "self": url_for('users_get', 
+        "age": new_user.get("age"), "body_type": new_user.get("body_type"), "frequency": new_user.get("frequency"), "level": "beginner", "self": url_for('users_get', 
         user_id=user_id, _external=True)}
         return (json.dumps(response_data), 201, {"Content-Type": "application/json"})
 
@@ -329,7 +409,7 @@ def users_get(user_id):
         return (json.dumps({"Error": "No user with this user_id exists"}), 404)
     else:
         response_data = {"id": user_id, "username": users.get("username"), "password": users.get("password"), "age": users.get("age"), 
-        "body_type": users.get("body_type"), "self": url_for('users_get', user_id=user_id, _external=True)}
+        "body_type": users.get("body_type"), "level": users.get("level"), "self": url_for('users_get', user_id=user_id, _external=True)}
       
         res = make_response(json.dumps(response_data))
         res.headers.set('Content-Type', 'application/json')
@@ -349,7 +429,7 @@ def users_get_all():
         response_data = []
         for user in users:
             user_id = user.key.id
-            user_data = {"id": user_id, "username": user.get("username"), "password": user.get("password"), "age": user.get("age"), "body_type": user.get("body_type"), "frequency": user.get("frequency"), "self": url_for('users_get', user_id=user_id, _external=True)}
+            user_data = {"id": user_id, "username": user.get("username"), "password": user.get("password"), "age": user.get("age"), "body_type": user.get("body_type"), "frequency": user.get("frequency"), "level": user.get("frequency"), "self": url_for('users_get', user_id=user_id, _external=True)}
             response_data.append(user_data)
         #res = make_response(json2html.convert(json = json.dumps(response_data)))
         res = make_response(json.dumps(response_data))
@@ -393,6 +473,18 @@ def users_patch(user_id):
         attributes.append(new_body_type)
     else:
         new_body_type = updated_user.get('body_type')
+
+    if content.get('frequency') != None:
+        new_frequency = content.get('frequency')
+        attributes.append(new_frequency)
+    else:
+        new_frequency = updated_user.get('frequency')
+    
+    if content.get('level') != None:
+        new_level = content.get('level')
+        attributes.append(new_level)
+    else:
+        new_level = updated_user.get('level')
 
     # check for inclusion of extraneous attributes
     if len(content) > 4:
@@ -446,11 +538,11 @@ def users_patch(user_id):
 
         else:
 
-            updated_user.update({"username": new_username, "password": new_password, "age": new_age, "body_type": new_body_type})
+            updated_user.update({"username": new_username, "password": new_password, "age": new_age, "body_type": new_body_type, "frequency": new_frequency, "level": new_level})
             client.put(updated_user)
             user_id = updated_user.key.id
 
-            response_data = {"id": user_id, "username": updated_user.get("username"), "password": updated_user.get("password"), "age": updated_user.get("age"), "body_type": updated_user.get("body_type"), "self": url_for('users_get', user_id=user_id, _external=True)}
+            response_data = {"id": user_id, "username": updated_user.get("username"), "password": updated_user.get("password"), "age": updated_user.get("age"), "body_type": updated_user.get("body_type"), "frequency": updated_user.get("body_type"), "level": updated_user.get("level"), "self": url_for('users_get', user_id=user_id, _external=True)}
 
             return (json.dumps(response_data), 201, {"Content-Type": "application/json"})
 
@@ -524,7 +616,7 @@ def users_put(user_id):
 
 """
 
-#DELETE A users
+#DELETE A user
 """
 @app.route('/users/<user_id>', methods=['DELETE'])
 def users_delete(user_id):
