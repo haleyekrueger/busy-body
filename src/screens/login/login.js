@@ -6,13 +6,16 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../../customStyleSheet'
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+//resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
+//          https://www.youtube.com/watch?v=O5sI8oWVBR0
 
+
+
+// Link to connect to backend
 const config = {
   backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
 }
 
-//resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
-//          https://www.youtube.com/watch?v=O5sI8oWVBR0
 
 
 const LoginScreen = () => {
@@ -22,61 +25,51 @@ const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
- // const onSignInPressed = () => {
-    // send username and password to backend? how to manage login
-// can we do a /users GET request and then parse through the list for
-// the unique username and then see if the password asso iated with the username 
-// matches the password entered
+
+  const onSignInPressed = async () => {
+    try {
+      const response = await fetch(`${config.backendUrl}/users`);
+      const users = await response.json();
+
+      console.log(users);
     
+      const usernameInput = username;
+      const passwordInput = password;
 
-  //  navigation.navigate('Survey')
-//  }
- 
-  
-const onSignInPressed = async () => {
-  try {
-    const response = await fetch(`${config.backendUrl}/users`);
-    const users = await response.json();
-
-    console.log(users);
-  
-    const usernameInput = username;
-    const passwordInput = password;
-
-    const user = users.find(user => user.username === usernameInput)
-    
-
-    if (user && user.password === passwordInput) {
-      const userID = user.id;
-
-      console.log(userID)
-      // passing userID to identify the correct user on the rest of the screens
- 
-      navigation.navigate('TabNavigation', {
-        screen: 'WorkoutNavigation',
-        userID: userID,})
+      const user = users.find(user => user.username === usernameInput)
       
-    } else {
-      alert('Invalid username or password');
+
+      if (user && user.password === passwordInput) {
+        const userID = user.id;
+
+        // console.log("USER ID", userID)
+        // console.log("USER", user)
+        // passing userID to identify the correct user on the rest of the screens
+  
+        navigation.navigate('TabNavigation', {
+          screen: 'WorkoutNavigation',
+          userID: userID,
+          user: user,
+          users: users,
+        })
+        
+      } else {
+        alert('Invalid username or password');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Something went wrong. Please try again later.');
     }
-  } catch (error) {
-    console.error(error);
-    alert('Something went wrong. Please try again later.');
-  }
-};
-  
-  
+  };
+    
+    
 
   const onSignUpPressed = () => {
     navigation.navigate('SignUp')
     // this will send a CREATE request to Users api
   }
 
-  const {height} = useWindowDimensions();
-
-
     return (
-
       <LinearGradient style={styles.container}
         colors={[
           '#E4B9FF',
@@ -112,15 +105,17 @@ const onSignInPressed = async () => {
                         
 
             <CustomButton 
-           
               text="Sign In" 
               onPress={onSignInPressed} />
+
+
             <View style={styles.root}>
             <CustomButton 
               text="New User? Create an account" 
               onPress={onSignUpPressed}
               type="TERTIARY"
             />
+
             </View>
 
         </View>

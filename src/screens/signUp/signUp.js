@@ -13,6 +13,7 @@ import { BlurView } from 'expo-blur';
 
 //resource: https://www.youtube.com/watch?v=ALnJLbjI7EY
 //  https://blog.logrocket.com/how-to-use-react-native-picker-select/
+//
  
 
 const config = {

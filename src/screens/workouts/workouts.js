@@ -21,25 +21,11 @@ const exercises_example = [
   { name: 'Tricep Pushdown', sets: 3, reps: 12, instructions: 'tricep pushdown instructions...' },
 ];
 
-
-// take the list of exercises and divide by number of days necessary
-// based on frequency from the survey 
-// once this works can go back and make separate functions to add the days
-// of the week
-
-
 const WorkoutScreen = () => {
   const navigation = useNavigation();
 
   const route = useRoute();
-  const { users, user, userID } = route.params;
-  // console.log(users.length);
-  // console.log(user);
-  // console.log(userID);
- 
-  // if user frequency is 3: monday, wed, friday workouts
-  // if user frequency is 4: monday, tuesday, thursday, friday workouts
-  // if user frequency is 5: monday-friday workouts 
+  const { userID, user, users } = route.params;
 
   const frequency = 3;
 
@@ -48,6 +34,7 @@ const WorkoutScreen = () => {
   const weeklyExercises = [];
 
   const exercisesPerDay = Math.floor(exercises_example.length / frequency);
+
   // add remainder to the last day 
   const exercisesLeft = exercises_example.length % frequency;
 
@@ -57,8 +44,6 @@ const WorkoutScreen = () => {
     
     for (let j = 0; j < exercisesPerDay; j++) {
       const exerciseIndex = i * exercisesPerDay + j;
-      // console.log("INDEX", exerciseIndex)
-      // console.log("EXERCISE", exercises_example[exerciseIndex])
       dailyExercises.push(exercises_example[exerciseIndex]);
     }
 
@@ -74,7 +59,8 @@ const WorkoutScreen = () => {
   }
 
   const onViewPressed = (exercise_list) => {
-    navigation.navigate('ExerciseDetails', {exercise_list, user});
+
+    navigation.navigate('ExerciseDetails', {exercise_list, user, userID});
   };
 
   // map through the weekly workouts to display each day
