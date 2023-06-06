@@ -20,25 +20,27 @@ const config = {
   backendUrl: 'https://busy-body-final.uw.r.appspot.com',
 }
 
-const level = 'beginner';
 
-const registerUser = async (username, level, password, age, frequency, body_type) => {
-  console.log(username, password, age, frequency, body_type )
+const registerUser = async (username, password, age, frequency, body_type) => {
+  console.log(username, password, age, frequency, body_type)
+  const requestBody = {
+    username,
+    password,
+    age: parseInt(age),
+    frequency,
+    body_type,
+    level: 'beginner',
+  }
+ 
   try {
     const response = await fetch(`${config.backendUrl}/users`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify({
-        username,
-        password,
-        age: parseInt(age),
-        body_type,
-        frequency,
-        level,
-      }),
+      body: JSON.stringify(requestBody),
     });
+
     if (response.ok) {
       const responseData = await response.json()
       const userID = responseData.id
