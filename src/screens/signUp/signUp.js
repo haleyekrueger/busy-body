@@ -20,8 +20,9 @@ const config = {
   backendUrl: 'https://busy-body-final.uw.r.appspot.com',
 }
 
+const level = 'beginner';
 
-const registerUser = async (username, password, age, frequency, body_type) => {
+const registerUser = async (username, level, password, age, frequency, body_type) => {
   console.log(username, password, age, frequency, body_type )
   try {
     const response = await fetch(`${config.backendUrl}/users`, {
@@ -35,6 +36,7 @@ const registerUser = async (username, password, age, frequency, body_type) => {
         age: parseInt(age),
         body_type,
         frequency,
+        level,
       }),
     });
     if (response.ok) {
@@ -88,9 +90,7 @@ const SignUp = () => {
       console.log(response.userID, 2);
       if (response.success) {
         console.log(response.userID,3)
-        navigation.navigate('TabNavigation', {
-          screen: 'WorkoutNavigation',
-          userID: response.userID,})  
+        navigation.navigate('Login')  
     }
     } catch (error) {
       console.error(error)
