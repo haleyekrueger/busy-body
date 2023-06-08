@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 // Link to connect to backend
 const config = {
-  backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
+  backendUrl: 'https://busy-body-final.uw.r.appspot.com',
 }
 
 

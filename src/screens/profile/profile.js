@@ -10,7 +10,7 @@ import CustomButton from '../../components/CustomButton';
 
 
 const config = {
-  backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
+  backendUrl: 'https://busy-body-final.uw.r.appspot.com',
 }
 
 const Profile = () => {

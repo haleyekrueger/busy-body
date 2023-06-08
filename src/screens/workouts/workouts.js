@@ -9,7 +9,7 @@ import { BlurView } from 'expo-blur';
 
 
 const config = {
-  backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
+  backendUrl: 'https://busy-body-final.uw.r.appspot.com',
 };
 
 const exercises_example = [

@@ -9,7 +9,7 @@ import CustomButton from '../../components/CustomButton';
 
 
 const config = {
-    backendUrl: 'https://busy-body-386417.wn.r.appspot.com',
+    backendUrl: 'https://busy-body-final.uw.r.appspot.com',
   };
 
 const Stats = () => {
@@ -25,7 +25,7 @@ const Stats = () => {
       useEffect(() => {
       const fetchUserData = async () => {
         try {
-          const response1 = await fetch(`${config.backendUrl}/users/${userID}/exercises`,
+          const response1 = await fetch(`${config.backendUrl}/users/${userID}`,
           {
             method: 'GET'
           });
